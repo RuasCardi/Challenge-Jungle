@@ -202,7 +202,7 @@ const realtime = ws.link(
     .replace(/^http:/, "ws:"),
 );
 const socketHandler = realtime.addEventListener("connection", (connection) => {
-  // The installed binding uses an older interceptor type; its public wire contract is compatible.
+  // MSW exposes the protocol interface; the binding expects its concrete type.
   const bound = toSocketIo(
     connection as unknown as Parameters<typeof toSocketIo>[0],
   );

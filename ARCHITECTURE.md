@@ -16,6 +16,10 @@
 
 O ponto de entrada carrega `bootstrap.tsx`, o módulo da rota inicial e o MSW em paralelo. Isso evita aguardar o download e a execução do runtime React para só então começar a preparar a rede simulada. A montagem do React aguarda a conclusão de todos esses passos. `socket.io-client` é importado dentro do efeito de conexão, somente depois da montagem, para capturar o WebSocket já interceptado pelo MSW. O cleanup também cobre a resolução tardia desse import após logout ou desmontagem. `VITE_MOCKS=off` exclui a ativação do mock; o frontend continua usando os mesmos contratos.
 
+O override de `@mswjs/interceptors` no binding Socket.IO usa a mesma versão 0.41.9 já exigida pelo MSW, evitando duas versões instaladas. O cast fica restrito à fronteira do binding: o MSW expõe uma interface de protocolo, enquanto o binding tipa a conexão concreta.
+
+O cenário de sucesso usa `latency: 0`: foi removida a espera artificial fixa de 90 ms das respostas REST. A configuração é compartilhada por desenvolvimento, testes, demonstração publicada e Lighthouse. Permanecem os mesmos handlers, validações e eventos; os cenários de lentidão (1,8 s), respostas fora de ordem, timeout e pagamento pendente continuam reproduzíveis. Não há detecção do auditor nem alteração exclusiva para medição.
+
 ## Contratos REST
 
 Base `/api`. Corpo e resposta JSON. Valores monetários são strings decimais; quantidades e versões são inteiros. Nas rotas privadas, `Authorization: Bearer <token>` identifica a sessão. O token é fictício e pertence somente à demonstração local.

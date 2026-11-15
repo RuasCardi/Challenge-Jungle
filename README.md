@@ -45,6 +45,8 @@ Também é possível cadastrar uma conta. A demonstração persiste dados no nav
 
 O botão **Controles da demonstração**, no rodapé, configura os mesmos handlers usados nos testes. Aplicar um cenário preserva os dados existentes; **Restaurar todos os dados** volta às fixtures iniciais, limpa sessões, carrinhos, contas cadastradas, favoritos, pedidos, carteiras e rascunhos.
 
+O cenário padrão **Sucesso** responde sem espera artificial (`latency: 0`) em desenvolvimento, testes e publicação. A confirmação de pagamento mantém o atraso de 1,8 s. Use **Rede lenta** para observar skeletons e **Respostas fora de ordem** para exercitar cancelamento e descarte de respostas antigas. Dados persistidos de uma versão anterior preservam o cenário até selecionar Sucesso ou restaurar os dados.
+
 | Cenário                                 | Como reproduzir                                                                                                                |
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | Sucesso                                 | Compra padrão; confirma após cerca de 1,8 s.                                                                                   |

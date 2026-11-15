@@ -58,6 +58,11 @@
       "public"
     ]
   },
+  "overrides": {
+    "@mswjs/socket.io-binding": {
+      "@mswjs/interceptors": "0.41.9"
+    }
+  },
   "engines": {
     "node": ">=22.13.0"
   }

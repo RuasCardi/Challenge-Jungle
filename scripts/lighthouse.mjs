@@ -30,7 +30,7 @@ const summary = {
     origin,
     build: "npm run build",
     conditions:
-      "Build otimizado; cenário padrão MSW; imagens e fonte locais da entrega; cache limpo em cada navegação; throttling simulado padrão mobile/desktop. Execuções sequenciais sem testes concorrentes.",
+      "Build otimizado; cenário padrão MSW success (latency 0 ms, orderDelay 1800 ms), idêntico em desenvolvimento, testes e demonstração; imagens e fonte locais da entrega; cache limpo em cada navegação; throttling simulado padrão mobile/desktop. Execuções sequenciais sem testes concorrentes.",
   },
   runs: [],
   medians: [],

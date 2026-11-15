@@ -35,7 +35,7 @@ export type DB = {
 const KEY = "novanft-db-v6";
 export const defaultScenario: Scenario = {
   name: "success",
-  latency: 90,
+  latency: 0,
   variable: false,
   network: "online",
   payment: "confirmed",
