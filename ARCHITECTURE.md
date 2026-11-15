@@ -2,6 +2,10 @@
 
 ## Responsabilidades
 
+A revisão de acabamento remove a moldura do catálogo e usa enquadramento CSS para excluir as bordas já embutidas nas artes, preservando os arquivos originais. As baselines de início em desktop, tablet e mobile foram revistas após essa alteração.
+
+Diálogos carregam `@radix-ui/react-dialog` ao abrir; acionadores continuam sendo botões acessíveis antes do carregamento. Após carregar, o próprio Radix controla modal, foco, Escape e retorno ao acionador. O build usa Terser e gera alternativas Brotli para JS/CSS; a prévia negocia Brotli com fallback. A publicação Vercel serve Brotli nativamente. As medições finais são feitas também na URL pública.
+
 - `src/data.ts`: contratos TypeScript compartilhados; sem fixtures.
 - `src/api.ts`: Axios, Bearer token, timeout e normalização de expiração. Consultas recebem AbortSignal.
 - `src/queries.ts`: TanStack Query, escopo por sessão, mutations, invalidação e favoritos otimistas.

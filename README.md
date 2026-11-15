@@ -97,6 +97,8 @@ A auditoria executa três medições por rota (`/` e `/nft/cyber-ape`) e perfil 
 
 ## Entrega e referências
 
+[Conferência dos nove critérios e seus pesos](reports/criteria.md) · [Auditoria Lighthouse](reports/performance.md) · [Validação dos fluxos](reports/VALIDATION.md).
+
 `vercel.json` configura fallback de rotas SPA e o worker da demonstração. `_redirects` oferece o equivalente para hospedagem estática compatível. A versão publicada precisa incluir todo o conteúdo de `dist/`.
 
 Referências visuais: os **15 PNGs em `Exemplos/`**, correspondentes a início, detalhe, carrinho, pagamento, confirmação, login, cadastro, perfil e carteiras, e o [Figma — Frontend Challenge](https://www.figma.com/design/Ff0SksUi7UFtPWUO8kyNtw/Frontend-Challenge?node-id=2-2). A revisão implementa a marca KURIO, paleta marrom/laranja, composição desktop e variantes mobile. As artes originais locais `ape-*.png` foram preservadas; a interface usa cópias WebP otimizadas e responsivas. A fonte Roboto Mono em WOFF2 fica hospedada localmente com sua licença. Ajustes e limites de fidelidade estão em `ARCHITECTURE.md`.

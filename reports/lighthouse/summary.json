@@ -1,5 +1,5 @@
 {
-  "startedAt": "2026-11-15T14:24:48.348Z",
+  "startedAt": "2026-11-15T14:54:11.365Z",
   "complete": true,
   "targets": {
     "performance": 90,
@@ -13,7 +13,7 @@
     "os": "10.0.19045",
     "cpu": "AMD Ryzen 5 5500                               ",
     "memoryGiB": 8,
-    "origin": "http://127.0.0.1:4175",
+    "origin": "https://challengejungle.vercel.app",
     "build": "npm run build",
     "conditions": "Build otimizado; cenário padrão MSW success (latency 0 ms, orderDelay 1800 ms), idêntico em desenvolvimento, testes e demonstração; imagens e fonte locais da entrega; cache limpo em cada navegação; throttling simulado padrão mobile/desktop. Execuções sequenciais sem testes concorrentes."
   },
@@ -22,60 +22,45 @@
       "page": "home",
       "profile": "mobile",
       "run": 1,
-      "timestamp": "2026-11-15T14:24:52.410Z",
+      "timestamp": "2026-11-15T14:54:15.235Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
-        "performance": 85,
+        "performance": 93,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
       "metrics": {
-        "LCP": 3794.4056,
+        "LCP": 3001.378,
         "CLS": 0,
-        "TBT": 120
+        "TBT": 28.5
       },
       "issues": [
         {
           "id": "first-contentful-paint",
           "title": "First Contentful Paint",
-          "value": "2.2 s"
+          "value": "1.9 s"
         },
         {
           "id": "largest-contentful-paint",
           "title": "Largest Contentful Paint",
-          "value": "3.8 s"
-        },
-        {
-          "id": "max-potential-fid",
-          "title": "Max Potential First Input Delay",
-          "value": "150 ms"
-        },
-        {
-          "id": "interactive",
-          "title": "Time to Interactive",
-          "value": "3.8 s"
+          "value": "3.0 s"
         },
         {
           "id": "largest-contentful-paint-element",
           "title": "Largest Contentful Paint element",
-          "value": "3,790 ms"
+          "value": "3,000 ms"
         },
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 150 ms"
-        },
-        {
-          "id": "unused-css-rules",
-          "title": "Reduce unused CSS",
-          "value": "Est savings of 10 KiB"
+          "value": "Est savings of 90 ms"
         },
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 63 KiB"
+          "value": "Est savings of 24 KiB"
         },
         {
           "id": "bf-cache",
@@ -94,7 +79,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 150 ms"
+          "value": "Est savings of 240 ms"
         }
       ]
     },
@@ -102,55 +87,35 @@
       "page": "home",
       "profile": "mobile",
       "run": 2,
-      "timestamp": "2026-11-15T14:25:00.447Z",
+      "timestamp": "2026-11-15T14:54:24.730Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
-        "performance": 87,
+        "performance": 94,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
       "metrics": {
-        "LCP": 3674.2655,
+        "LCP": 2861.1989,
         "CLS": 0,
-        "TBT": 112.50000000000011
+        "TBT": 40
       },
       "issues": [
         {
-          "id": "first-contentful-paint",
-          "title": "First Contentful Paint",
-          "value": "2.1 s"
-        },
-        {
           "id": "largest-contentful-paint",
           "title": "Largest Contentful Paint",
-          "value": "3.7 s"
-        },
-        {
-          "id": "max-potential-fid",
-          "title": "Max Potential First Input Delay",
-          "value": "140 ms"
+          "value": "2.9 s"
         },
         {
           "id": "largest-contentful-paint-element",
           "title": "Largest Contentful Paint element",
-          "value": "3,670 ms"
+          "value": "2,860 ms"
         },
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 150 ms"
-        },
-        {
-          "id": "unused-css-rules",
-          "title": "Reduce unused CSS",
-          "value": "Est savings of 10 KiB"
-        },
-        {
-          "id": "unused-javascript",
-          "title": "Reduce unused JavaScript",
-          "value": "Est savings of 63 KiB"
+          "value": "Est savings of 90 ms"
         },
         {
           "id": "bf-cache",
@@ -169,7 +134,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 150 ms"
+          "value": "Est savings of 240 ms"
         }
       ]
     },
@@ -177,50 +142,40 @@
       "page": "home",
       "profile": "mobile",
       "run": 3,
-      "timestamp": "2026-11-15T14:25:08.209Z",
+      "timestamp": "2026-11-15T14:54:32.706Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
-        "performance": 87,
+        "performance": 94,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
       "metrics": {
-        "LCP": 3772.1768,
+        "LCP": 2863.0949,
         "CLS": 0,
-        "TBT": 83
+        "TBT": 39.5
       },
       "issues": [
         {
-          "id": "first-contentful-paint",
-          "title": "First Contentful Paint",
-          "value": "2.0 s"
-        },
-        {
           "id": "largest-contentful-paint",
           "title": "Largest Contentful Paint",
-          "value": "3.8 s"
+          "value": "2.9 s"
         },
         {
           "id": "largest-contentful-paint-element",
           "title": "Largest Contentful Paint element",
-          "value": "3,770 ms"
+          "value": "2,860 ms"
         },
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 150 ms"
-        },
-        {
-          "id": "unused-css-rules",
-          "title": "Reduce unused CSS",
-          "value": "Est savings of 10 KiB"
+          "value": "Est savings of 90 ms"
         },
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 63 KiB"
+          "value": "Est savings of 24 KiB"
         },
         {
           "id": "bf-cache",
@@ -239,7 +194,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 150 ms"
+          "value": "Est savings of 240 ms"
         }
       ]
     },
@@ -247,7 +202,7 @@
       "page": "home",
       "profile": "desktop",
       "run": 1,
-      "timestamp": "2026-11-15T14:25:15.871Z",
+      "timestamp": "2026-11-15T14:54:40.478Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -257,7 +212,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 785.3692,
+        "LCP": 578.7921,
         "CLS": 0.000004571741693908194,
         "TBT": 0
       },
@@ -265,17 +220,17 @@
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 40 ms"
+          "value": "Est savings of 80 ms"
         },
         {
           "id": "unused-css-rules",
           "title": "Reduce unused CSS",
-          "value": "Est savings of 11 KiB"
+          "value": "Est savings of 12 KiB"
         },
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 63 KiB"
+          "value": "Est savings of 24 KiB"
         },
         {
           "id": "bf-cache",
@@ -294,7 +249,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 40 ms"
+          "value": "Est savings of 80 ms"
         }
       ]
     },
@@ -302,7 +257,7 @@
       "page": "home",
       "profile": "desktop",
       "run": 2,
-      "timestamp": "2026-11-15T14:25:24.022Z",
+      "timestamp": "2026-11-15T14:54:48.630Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -312,7 +267,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 792.7766,
+        "LCP": 578.856,
         "CLS": 0.000004571741693908194,
         "TBT": 0
       },
@@ -320,17 +275,17 @@
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 40 ms"
+          "value": "Est savings of 80 ms"
         },
         {
           "id": "unused-css-rules",
           "title": "Reduce unused CSS",
-          "value": "Est savings of 11 KiB"
+          "value": "Est savings of 12 KiB"
         },
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 63 KiB"
+          "value": "Est savings of 48 KiB"
         },
         {
           "id": "bf-cache",
@@ -349,7 +304,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 40 ms"
+          "value": "Est savings of 80 ms"
         }
       ]
     },
@@ -357,7 +312,7 @@
       "page": "home",
       "profile": "desktop",
       "run": 3,
-      "timestamp": "2026-11-15T14:25:31.900Z",
+      "timestamp": "2026-11-15T14:54:56.717Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -367,7 +322,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 796.4974,
+        "LCP": 582.0566,
         "CLS": 0.000004571741693908194,
         "TBT": 0
       },
@@ -378,14 +333,9 @@
           "value": "Est savings of 40 ms"
         },
         {
-          "id": "unused-css-rules",
-          "title": "Reduce unused CSS",
-          "value": "Est savings of 11 KiB"
-        },
-        {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 63 KiB"
+          "value": "Est savings of 31 KiB"
         },
         {
           "id": "bf-cache",
@@ -404,7 +354,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 40 ms"
+          "value": "Est savings of 80 ms"
         }
       ]
     },
@@ -412,35 +362,30 @@
       "page": "detail",
       "profile": "mobile",
       "run": 1,
-      "timestamp": "2026-11-15T14:25:39.408Z",
+      "timestamp": "2026-11-15T14:55:04.858Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
-        "performance": 87,
+        "performance": 93,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
       "metrics": {
-        "LCP": 3774.938999999999,
+        "LCP": 3098.6049000000003,
         "CLS": 0,
-        "TBT": 43
+        "TBT": 40
       },
       "issues": [
         {
-          "id": "first-contentful-paint",
-          "title": "First Contentful Paint",
-          "value": "2.0 s"
-        },
-        {
           "id": "largest-contentful-paint",
           "title": "Largest Contentful Paint",
-          "value": "3.8 s"
+          "value": "3.1 s"
         },
         {
           "id": "largest-contentful-paint-element",
           "title": "Largest Contentful Paint element",
-          "value": "3,770 ms"
+          "value": "3,100 ms"
         },
         {
           "id": "render-blocking-resources",
@@ -448,14 +393,9 @@
           "value": "Est savings of 150 ms"
         },
         {
-          "id": "unused-css-rules",
-          "title": "Reduce unused CSS",
-          "value": "Est savings of 11 KiB"
-        },
-        {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 64 KiB"
+          "value": "Est savings of 57 KiB"
         },
         {
           "id": "bf-cache",
@@ -474,7 +414,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 150 ms"
+          "value": "Est savings of 290 ms"
         }
       ]
     },
@@ -482,50 +422,45 @@
       "page": "detail",
       "profile": "mobile",
       "run": 2,
-      "timestamp": "2026-11-15T14:25:46.578Z",
+      "timestamp": "2026-11-15T14:55:12.427Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
-        "performance": 87,
+        "performance": 93,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
       "metrics": {
-        "LCP": 3776.4937499999996,
+        "LCP": 3096.5362,
         "CLS": 0,
-        "TBT": 43
+        "TBT": 27
       },
       "issues": [
         {
-          "id": "first-contentful-paint",
-          "title": "First Contentful Paint",
-          "value": "2.0 s"
-        },
-        {
           "id": "largest-contentful-paint",
           "title": "Largest Contentful Paint",
-          "value": "3.8 s"
+          "value": "3.1 s"
         },
         {
           "id": "largest-contentful-paint-element",
           "title": "Largest Contentful Paint element",
-          "value": "3,780 ms"
+          "value": "3,100 ms"
         },
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 150 ms"
+          "value": "Est savings of 280 ms"
         },
         {
           "id": "unused-css-rules",
           "title": "Reduce unused CSS",
-          "value": "Est savings of 11 KiB"
+          "value": "Est savings of 13 KiB"
         },
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 64 KiB"
+          "value": "Est savings of 57 KiB"
         },
         {
           "id": "bf-cache",
@@ -535,7 +470,7 @@
         {
           "id": "image-delivery-insight",
           "title": "Improve image delivery",
-          "value": "Est savings of 57 KiB"
+          "value": "Est savings of 12 KiB"
         },
         {
           "id": "network-dependency-tree-insight",
@@ -544,7 +479,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 150 ms"
+          "value": "Est savings of 270 ms"
         }
       ]
     },
@@ -552,55 +487,45 @@
       "page": "detail",
       "profile": "mobile",
       "run": 3,
-      "timestamp": "2026-11-15T14:25:53.531Z",
+      "timestamp": "2026-11-15T14:55:19.628Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
-        "performance": 86,
+        "performance": 93,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
       "metrics": {
-        "LCP": 3778.42375,
+        "LCP": 3094.2291,
         "CLS": 0,
-        "TBT": 68
+        "TBT": 44
       },
       "issues": [
         {
-          "id": "first-contentful-paint",
-          "title": "First Contentful Paint",
-          "value": "2.2 s"
-        },
-        {
           "id": "largest-contentful-paint",
           "title": "Largest Contentful Paint",
-          "value": "3.8 s"
-        },
-        {
-          "id": "interactive",
-          "title": "Time to Interactive",
-          "value": "3.8 s"
+          "value": "3.1 s"
         },
         {
           "id": "largest-contentful-paint-element",
           "title": "Largest Contentful Paint element",
-          "value": "3,780 ms"
+          "value": "3,090 ms"
         },
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 150 ms"
+          "value": "Est savings of 280 ms"
         },
         {
           "id": "unused-css-rules",
           "title": "Reduce unused CSS",
-          "value": "Est savings of 11 KiB"
+          "value": "Est savings of 13 KiB"
         },
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 64 KiB"
+          "value": "Est savings of 44 KiB"
         },
         {
           "id": "bf-cache",
@@ -610,7 +535,7 @@
         {
           "id": "image-delivery-insight",
           "title": "Improve image delivery",
-          "value": "Est savings of 57 KiB"
+          "value": "Est savings of 12 KiB"
         },
         {
           "id": "network-dependency-tree-insight",
@@ -619,7 +544,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 150 ms"
+          "value": "Est savings of 270 ms"
         }
       ]
     },
@@ -627,7 +552,7 @@
       "page": "detail",
       "profile": "desktop",
       "run": 1,
-      "timestamp": "2026-11-15T14:26:00.562Z",
+      "timestamp": "2026-11-15T14:55:26.795Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -637,7 +562,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 767.109,
+        "LCP": 585.1992,
         "CLS": 0,
         "TBT": 0
       },
@@ -647,19 +572,14 @@
           "title": "Elements with visible text labels do not have matching accessible names."
         },
         {
-          "id": "render-blocking-resources",
-          "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 40 ms"
-        },
-        {
           "id": "unused-css-rules",
           "title": "Reduce unused CSS",
-          "value": "Est savings of 12 KiB"
+          "value": "Est savings of 14 KiB"
         },
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 64 KiB"
+          "value": "Est savings of 57 KiB"
         },
         {
           "id": "uses-responsive-images",
@@ -683,7 +603,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 40 ms"
+          "value": "Est savings of 80 ms"
         }
       ]
     },
@@ -691,7 +611,7 @@
       "page": "detail",
       "profile": "desktop",
       "run": 2,
-      "timestamp": "2026-11-15T14:26:07.751Z",
+      "timestamp": "2026-11-15T14:55:33.998Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -701,7 +621,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 771.5558000000001,
+        "LCP": 581.0471,
         "CLS": 0,
         "TBT": 0
       },
@@ -713,17 +633,17 @@
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 40 ms"
+          "value": "Est savings of 80 ms"
         },
         {
           "id": "unused-css-rules",
           "title": "Reduce unused CSS",
-          "value": "Est savings of 12 KiB"
+          "value": "Est savings of 14 KiB"
         },
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 64 KiB"
+          "value": "Est savings of 57 KiB"
         },
         {
           "id": "uses-responsive-images",
@@ -747,7 +667,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 40 ms"
+          "value": "Est savings of 80 ms"
         }
       ]
     },
@@ -755,7 +675,7 @@
       "page": "detail",
       "profile": "desktop",
       "run": 3,
-      "timestamp": "2026-11-15T14:26:14.781Z",
+      "timestamp": "2026-11-15T14:55:41.196Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -765,7 +685,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 804.2770249999999,
+        "LCP": 582.4448,
         "CLS": 0,
         "TBT": 0
       },
@@ -775,19 +695,14 @@
           "title": "Elements with visible text labels do not have matching accessible names."
         },
         {
-          "id": "render-blocking-resources",
-          "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 40 ms"
-        },
-        {
           "id": "unused-css-rules",
           "title": "Reduce unused CSS",
-          "value": "Est savings of 12 KiB"
+          "value": "Est savings of 14 KiB"
         },
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 64 KiB"
+          "value": "Est savings of 49 KiB"
         },
         {
           "id": "uses-responsive-images",
@@ -802,7 +717,7 @@
         {
           "id": "image-delivery-insight",
           "title": "Improve image delivery",
-          "value": "Est savings of 12 KiB"
+          "value": "Est savings of 43 KiB"
         },
         {
           "id": "network-dependency-tree-insight",
@@ -811,7 +726,7 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 40 ms"
+          "value": "Est savings of 80 ms"
         }
       ]
     }
@@ -821,15 +736,15 @@
       "page": "home",
       "profile": "mobile",
       "scores": {
-        "performance": 87,
+        "performance": 94,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
       "metrics": {
-        "LCP": 3772.1768,
+        "LCP": 2863.0949,
         "CLS": 0,
-        "TBT": 112.50000000000011
+        "TBT": 39.5
       }
     },
     {
@@ -842,7 +757,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 792.7766,
+        "LCP": 578.856,
         "CLS": 0.000004571741693908194,
         "TBT": 0
       }
@@ -851,15 +766,15 @@
       "page": "detail",
       "profile": "mobile",
       "scores": {
-        "performance": 87,
+        "performance": 93,
         "accessibility": 100,
         "best-practices": 100,
         "seo": 100
       },
       "metrics": {
-        "LCP": 3776.4937499999996,
+        "LCP": 3096.5362,
         "CLS": 0,
-        "TBT": 43
+        "TBT": 40
       }
     },
     {
@@ -872,12 +787,12 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 771.5558000000001,
+        "LCP": 582.4448,
         "CLS": 0,
         "TBT": 0
       }
     }
   ],
-  "targetsPassed": false,
-  "finishedAt": "2026-11-15T14:26:20.881Z"
+  "targetsPassed": true,
+  "finishedAt": "2026-11-15T14:55:47.184Z"
 }

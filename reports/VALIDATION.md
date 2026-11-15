@@ -25,7 +25,7 @@ Para testar uma prévia já ativa, defina `BASE_URL`; para auditá-la, defina `A
 - Build com verificação TypeScript: aprovado.
 - Instalação limpa pelo lockfile (`npm.cmd ci`): aprovada.
 - ESLint: aprovado.
-- Playwright, rodada consolidada final: **60 testes aprovados em 1,7 minuto**, sem retries. Inclui 27 cenários funcionais em desktop e mobile, três verificações de responsividade e três de regressão visual (quatro imagens por viewport). Execução após instalação limpa, com o cenário padrão `success/latency: 0` documentado no README.
+- Playwright, rodada consolidada final: **60 testes aprovados em 1,5 minuto**, sem retries. Inclui 27 cenários funcionais em desktop e mobile, três verificações de responsividade e três de regressão visual (quatro imagens por viewport), com os cards corrigidos e os diálogos Radix sob demanda.
 - Conferência manual de compra completa em 1440 e 390 px: pedido confirmado, sem erros JavaScript nem overflow.
 - Conferência manual de login, cadastro, perfil e carteiras em 390, 768 e 1440 px: sem erros JavaScript nem overflow.
 - Responsividade automatizada: as nove telas, incluindo recibo após compra, passaram nos três tamanhos e com zoom de 200%.
@@ -34,7 +34,7 @@ Para testar uma prévia já ativa, defina `BASE_URL`; para auditá-la, defina `A
 
 A rodada anterior revelou uma corrida no helper de testes após refresh: o fetch podia ocorrer antes de `worker.start()`. O helper agora aguarda a montagem da aplicação, que só ocorre após a ativação do MSW. A correção foi confirmada na rodada consolidada acima. A análise detalhada dos gaps funcionais corrigidos fica em [requirements-audit.md](requirements-audit.md).
 
-Lighthouse: **12 medições concluídas**, três por página/perfil. As medianas de performance foram **100 no desktop e 87 no mobile**, em início e detalhe; acessibilidade, boas práticas e SEO ficaram em **100** em todos os grupos. CLS mobile foi zero. A meta de performance mobile ≥ 90 não foi atingida; causas, condições e relatórios HTML/JSON estão em [performance.md](performance.md).
+Lighthouse: **12 medições concluídas diretamente na URL pública**, três por página/perfil. Performance mobile: **94 no início e 93 no detalhe**; desktop, acessibilidade, boas práticas e SEO: **100**. CLS mobile: zero. Todas as metas foram atingidas. Os relatórios HTML/JSON e as condições estão em [performance.md](performance.md).
 
 A rodada inicial desta conclusão passou em 59 dos 60 testes e identificou uma baseline mobile do detalhe com miniaturas de 58 px, enquanto o CSS implementado define 45 px. Após comparar a captura esperada, a atual, o diff e o exemplo mobile, somente `tests/baselines/mobile/detail.png` foi atualizada. O teste visual mobile passou na repetição e a rodada completa seguinte passou em todos os 60 testes. O [diff da falha inicial](e2e/initial-visual-failure/detail-diff.png) foi versionado. O trace completo permanece somente no checkout local, em `reports/e2e/initial-visual-failure/trace.zip`, excluído do Git: a revisão automática bloqueou sua publicação pelo risco de traces conterem dados de sessão. Novas execuções com falha geram seus próprios traces em `test-results/`.
 
@@ -46,16 +46,16 @@ O servidor de testes usa `build()` e `preview()` do Vite no mesmo processo. Isso
 
 - Aplicação pública: [challengejungle.vercel.app](https://challengejungle.vercel.app).
 - Código-fonte: [RuasCardi/Challenge-Jungle](https://github.com/RuasCardi/Challenge-Jungle).
-- Runtime verificado: commit `5cc95b21e19fa5edffc846f93e51c67eca775ca6`, publicado em produção pela integração Git da Vercel. Deployment `dpl_FxRWR4CaJKqn7G51A75UFtjcaAH8`, estado **READY**, com o mesmo SHA confirmado na plataforma.
-- **12 testes funcionais públicos aprovados em 19,8 s**, sem retries: seis cenários em desktop/mobile, cobrindo cadastro/conflito, detalhe direto/404, compra e recibo imutável, duplo clique/pendência/reconexão/refresh e eventos de preço/estoque. Evidência: [relatório HTML de produção](e2e/production/index.html).
+- Runtime verificado: commit `06c1533f478bf5c27fe90ad4295e7762d595e2d1`, publicado em produção pela integração Git da Vercel. Deployment `dpl_6w3tnA7ZBkfrWssRfTPJ4up9NjN4`, estado **READY**, com o mesmo SHA confirmado na plataforma.
+- **14 testes funcionais públicos aprovados em 28,3 s**, sem retries: sete cenários em desktop/mobile, cobrindo cadastro/conflito, detalhe direto/404, compra e recibo imutável, duplo clique/pendência/reconexão/refresh, eventos de preço/estoque e teclado/foco de diálogos. Evidência: [relatório HTML de produção](e2e/production/index.html).
 - **Smoke público aprovado** em desktop/mobile: HTTPS e HTTP 200 no início, detalhe direto e refresh; Service Worker controlador ativo; REST respondido pelo MSW; cliente Socket.IO inscrito; fontes e imagens decodificadas; nenhum erro JavaScript nem falha de asset. Evidência: [production-smoke.json](production-smoke.json).
 - O smoke aguarda fontes e imagens antes de navegar e registra cancelamentos de requests separadamente de falhas reais. O primeiro ensaio havia contado cancelamentos de imagens durante a própria navegação do script como erro; o carregamento e a decodificação foram confirmados na repetição.
 
-Para reproduzir a infraestrutura pública, execute `npm.cmd run test:production`. Para repetir os testes funcionais contra a publicação, defina `$env:BASE_URL='https://challengejungle.vercel.app'` antes de `npm.cmd run test:e2e`. O relatório salvo acima corresponde ao subconjunto de 12 fluxos descrito; a suíte local completa contém 60 testes.
+Para reproduzir a infraestrutura pública, execute `npm.cmd run test:production`. Para repetir os testes funcionais contra a publicação, defina `$env:BASE_URL='https://challengejungle.vercel.app'` antes de `npm.cmd run test:e2e`. O relatório salvo acima corresponde ao subconjunto de 14 fluxos descrito; a suíte local completa contém 60 testes.
 
 ## Limites e itens da entrega
 
 - As capturas de regressão testam consistência da implementação. Não representam equivalência pixel a pixel aos PNGs. A fonte exata, medidas e assets separados do arquivo Figma não foram confirmados; foram usadas as artes locais existentes e Roboto Mono com licença OFL.
 - Busca, filtros, quantidades, estados de estoque, conexão de carteira e revisão acrescentam controles necessários aos frames estáticos. Perfil/carteiras/recibo têm adaptações mobile próprias. Os desvios estão em `ARCHITECTURE.md`.
 - Toda compra, autenticação e transação é simulada. Páginas editoriais e ações auxiliares fora do escopo exibem essa limitação, sem fingir conclusão funcional.
-- A performance mobile permanece abaixo da meta de 90 e está documentada com as medições reais. As outras metas Lighthouse e os fluxos funcionais verificados passaram.
+- A tabela de nove critérios foi mapeada para suas evidências em [criteria.md](criteria.md). As notas finais de fidelidade e qualidade pertencem à banca; não se atribui uma nota total presumida.
