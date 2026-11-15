@@ -196,7 +196,11 @@ export function startOrderClock() {
       settleOrders();
   }, 250);
 }
-const realtime = ws.link("wss://realtime.novanft.test");
+const realtime = ws.link(
+  (import.meta.env.VITE_SOCKET_URL || "https://realtime.novanft.test")
+    .replace(/^https:/, "wss:")
+    .replace(/^http:/, "ws:"),
+);
 const socketHandler = realtime.addEventListener("connection", (connection) => {
   // The installed binding uses an older interceptor type; its public wire contract is compatible.
   const bound = toSocketIo(
@@ -288,6 +292,38 @@ export const handlers = [
       items = items.filter((n) => n.collection === p.get("collection"));
     if (p.get("available") === "true")
       items = items.filter((n) => n.available > 0);
+    const networks = (p.get("network") || "").split(",").filter(Boolean);
+    if (
+      networks.some(
+        (network) => !["Ethereum", "Polygon", "Solana"].includes(network),
+      )
+    )
+      return fail("Rede de catálogo inválida.", 422);
+    if (networks.length)
+      items = items.filter((n) => networks.includes(n.network));
+    for (const field of ["minPrice", "maxPrice"] as const) {
+      const value = p.get(field);
+      if (value && !/^\d+(\.\d{1,18})?$/.test(value))
+        return fail(
+          "Informe um preço decimal válido.",
+          422,
+          "VALIDATION_ERROR",
+          {
+            [field]: "Preço inválido.",
+          },
+        );
+    }
+    const minimum = p.get("minPrice");
+    const maximum = p.get("maxPrice");
+    if (minimum && maximum && new Decimal(minimum).gt(maximum))
+      return fail("O preço mínimo não pode superar o máximo.", 422);
+    if (minimum) items = items.filter((n) => new Decimal(n.price).gte(minimum));
+    if (maximum) items = items.filter((n) => new Decimal(n.price).lte(maximum));
+    const tab = p.get("tab") || "all";
+    if (!["all", "new", "trending"].includes(tab))
+      return fail("Seleção de catálogo inválida.", 422);
+    if (tab === "new") items = items.filter((n) => n.isNew);
+    if (tab === "trending") items = items.filter((n) => n.trending);
     if (p.get("sort") === "price-asc")
       items.sort((a, b) => new Decimal(a.price).comparedTo(b.price));
     if (p.get("sort") === "price-desc")
@@ -300,6 +336,15 @@ export const handlers = [
       page,
       pages: Math.max(1, Math.ceil(total / 9)),
       collections: [...new Set(db.nfts.map((n) => n.collection))],
+      categories: [...new Set(db.nfts.map((n) => n.category))],
+      categoryCounts: db.nfts.reduce<Record<string, number>>((counts, n) => {
+        counts[n.category] = (counts[n.category] || 0) + 1;
+        return counts;
+      }, {}),
+      networkCounts: db.nfts.reduce<Record<string, number>>((counts, n) => {
+        counts[n.network] = (counts[n.network] || 0) + 1;
+        return counts;
+      }, {}),
     });
   }),
   rest.get("/api/nfts/:id", ({ params }) => {
@@ -309,6 +354,7 @@ export const handlers = [
       : fail("NFT não encontrado.", 404, "NOT_FOUND");
   }),
   rest.get("/api/session", ({ request }) => {
+    if (invalidSession(request)) return unauthorized();
     const db = readDB();
     const token = tokenOf(request);
     const u = user(db, token);
@@ -636,12 +682,16 @@ export const handlers = [
   rest.patch("/api/profile", async ({ request }) => {
     const u = accountOf(request);
     if (!u) return unauthorized();
-    const { name, email, avatar } = (await request.json()) as {
-      name: string;
-      email: string;
-      avatar?: string;
-    };
-    if (name?.trim().length < 2)
+    const { name, email, avatar, username, ensName, walletNickname } =
+      (await request.json()) as {
+        name: string;
+        email: string;
+        avatar?: string;
+        username?: string;
+        ensName?: string;
+        walletNickname?: string;
+      };
+    if (!name?.trim() || name.trim().length < 2)
       return fail(
         "Nome deve ter ao menos 2 caracteres.",
         422,
@@ -651,6 +701,28 @@ export const handlers = [
     if (!emailValid(email || ""))
       return fail("Informe um e-mail válido.", 422, "VALIDATION_ERROR", {
         email: "E-mail inválido.",
+      });
+    const normalizedUsername = username?.trim().replace(/^@/, "").toLowerCase();
+    if (normalizedUsername && !/^[a-z0-9._]{3,30}$/.test(normalizedUsername))
+      return fail("Confira seu nome de usuário.", 422, "VALIDATION_ERROR", {
+        username: "Use de 3 a 30 letras, números, pontos ou sublinhados.",
+      });
+    if (
+      normalizedUsername &&
+      readDB().accounts.some(
+        (a) => a.id !== u.id && a.username === normalizedUsername,
+      )
+    )
+      return fail("Nome de usuário já cadastrado.", 409, "USERNAME_CONFLICT", {
+        username: "Este nome de usuário já está em uso.",
+      });
+    if (ensName?.trim() && !/^[a-z0-9][a-z0-9.-]*\.eth$/i.test(ensName.trim()))
+      return fail("Informe um nome ENS válido.", 422, "VALIDATION_ERROR", {
+        ensName: "Use um nome terminado em .eth.",
+      });
+    if (walletNickname && walletNickname.trim().length > 50)
+      return fail("Apelido de carteira muito longo.", 422, "VALIDATION_ERROR", {
+        walletNickname: "Use até 50 caracteres.",
       });
     if (
       readDB().accounts.some(
@@ -676,6 +748,15 @@ export const handlers = [
       a.name = name.trim();
       a.email = email.trim().toLowerCase();
       a.avatar = avatar;
+      if (username !== undefined) a.username = normalizedUsername || undefined;
+      if (ensName !== undefined) a.ensName = ensName.trim().toLowerCase();
+      if (walletNickname !== undefined)
+        a.walletNickname = walletNickname.trim();
+      const main = a.wallets.find((w) => w.primary);
+      if (main) {
+        if (ensName !== undefined) main.ensName = a.ensName;
+        if (walletNickname !== undefined) main.nickname = a.walletNickname;
+      }
       return publicAccount(a);
     });
     return HttpResponse.json(a);
@@ -730,6 +811,29 @@ export const handlers = [
         { address: "Endereço inválido." },
       );
     if (!networkValid(wallet.network)) return fail("Rede inválida.", 422);
+    if (wallet.email?.trim() && !emailValid(wallet.email.trim()))
+      return fail("Informe um e-mail válido.", 422, "VALIDATION_ERROR", {
+        email: "E-mail inválido.",
+      });
+    if (
+      wallet.ensName?.trim() &&
+      !/^[a-z0-9][a-z0-9.-]*\.eth$/i.test(wallet.ensName.trim())
+    )
+      return fail("Informe um nome ENS válido.", 422, "VALIDATION_ERROR", {
+        ensName: "ENS inválido.",
+      });
+    if (
+      wallet.secondaryAddress?.trim() &&
+      !/^(0x[a-fA-F0-9]{40}|[a-z0-9][a-z0-9.-]*\.eth)$/i.test(
+        wallet.secondaryAddress.trim(),
+      )
+    )
+      return fail(
+        "Informe um endereço secundário válido.",
+        422,
+        "VALIDATION_ERROR",
+        { secondaryAddress: "Use um endereço 0x ou um nome .eth." },
+      );
     if (
       u.wallets.some(
         (w) =>
@@ -751,6 +855,7 @@ export const handlers = [
         referralCode: wallet.referralCode?.trim() || "",
         email: wallet.email?.trim().toLowerCase() || a.email,
         ensName: wallet.ensName?.trim() || "",
+        secondaryAddress: wallet.secondaryAddress?.trim() || "",
         primary: wallet.primary || !a.wallets.length,
       };
       if (entry.primary)
@@ -761,6 +866,9 @@ export const handlers = [
       if (index >= 0) a.wallets[index] = entry;
       else a.wallets.push(entry);
       if (!a.wallets.some((w) => w.primary)) a.wallets[0].primary = true;
+      const main = a.wallets.find((w) => w.primary)!;
+      a.ensName = main.ensName;
+      a.walletNickname = main.nickname;
       return a.wallets;
     });
     walletConnections.delete(tokenOf(request)!);

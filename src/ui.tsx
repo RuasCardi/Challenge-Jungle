@@ -8,8 +8,21 @@ import {
   Link,
   redirect,
   lazyRouteComponent,
+  useRouterState,
+  defaultParseSearch,
+  defaultStringifySearch,
 } from "@tanstack/react-router";
-import { Menu, Search, ShoppingCart, X } from "lucide-react";
+import {
+  Heart,
+  House,
+  LogIn,
+  Menu,
+  ScanLine,
+  Search,
+  ShoppingCart,
+  UserRound,
+  X,
+} from "lucide-react";
 import { api } from "./api";
 import type { CatalogParams } from "./data";
 import {
@@ -51,6 +64,22 @@ const catalogSearch = (s: CatalogParams): CatalogParams => ({
   sort: ["price-asc", "price-desc"].includes(s.sort || "") ? s.sort : "",
   page: Math.max(1, Math.floor(Number(s.page) || 1)),
   available: s.available === true,
+  network:
+    typeof s.network === "string"
+      ? s.network
+          .split(",")
+          .filter((n) => ["Ethereum", "Polygon", "Solana"].includes(n))
+          .join(",")
+      : "",
+  minPrice:
+    typeof s.minPrice === "string" && /^\d+(\.\d{1,18})?$/.test(s.minPrice)
+      ? s.minPrice
+      : "",
+  maxPrice:
+    typeof s.maxPrice === "string" && /^\d+(\.\d{1,18})?$/.test(s.maxPrice)
+      ? s.maxPrice
+      : "",
+  tab: s.tab === "new" || s.tab === "trending" ? s.tab : "all",
 });
 const authSearch = (s: { redirect?: string }): { redirect?: string } => ({
   redirect:
@@ -113,6 +142,25 @@ const wallets = createRoute({
   component: lazyRouteComponent(() => import("./pages/account"), "Wallets"),
 });
 export const router = createRouter({
+  stringifySearch: (search) => {
+    const { minPrice, maxPrice, ...rest } = search;
+    const params = new URLSearchParams(defaultStringifySearch(rest));
+    if (typeof minPrice === "string" && minPrice)
+      params.set("minPrice", minPrice);
+    if (typeof maxPrice === "string" && maxPrice)
+      params.set("maxPrice", maxPrice);
+    const query = params.toString();
+    return query ? `?${query}` : "";
+  },
+  parseSearch: (search) => {
+    const parsed: Record<string, unknown> = defaultParseSearch(search);
+    const raw = new URLSearchParams(search);
+    // Decimal prices must remain strings, including values with 18 places.
+    for (const key of ["minPrice", "maxPrice"]) {
+      if (raw.has(key)) parsed[key] = raw.get(key);
+    }
+    return parsed;
+  },
   routeTree: root.addChildren([
     home,
     detail,
@@ -153,6 +201,9 @@ export default function App() {
   return <RouterProvider router={router} />;
 }
 function Shell() {
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
   const { data: session } = useSession();
   const { data: cart } = useCart();
   const rt = useRealtime();
@@ -188,17 +239,22 @@ function Shell() {
   }, [session?.expiresAt]);
   const nav = (
     <>
-      <Link to="/" onClick={() => setMenu(false)}>
+      <Link
+        to="/"
+        className={pathname === "/" ? "selected-nav" : ""}
+        onClick={() => setMenu(false)}
+      >
         Início
       </Link>
       <Link
         to="/"
+        className={pathname.startsWith("/nft/") ? "selected-nav" : ""}
         search={{ category: "Arte digital" }}
         onClick={() => setMenu(false)}
       >
         Mercado
       </Link>
-      <Link to="/" onClick={() => setMenu(false)}>
+      <Link to="/" hash="criadores" onClick={() => setMenu(false)}>
         Criadores
       </Link>
       <LearnLink />
@@ -220,11 +276,11 @@ function Shell() {
           <div className="navright">
             <Link
               to="/"
-              hash="catalogo"
+              hash="catalog-search"
               className="iconbtn"
               aria-label="Buscar no mercado"
             >
-              <Search size={17} />
+              <Search size={23} />
             </Link>
             <Link
               to="/cart"
@@ -248,7 +304,7 @@ function Shell() {
               </Link>
             ) : (
               <Link className="btn small outline" to="/login">
-                Entrar
+                <LogIn size={18} /> Entrar
               </Link>
             )}
             <Dialog open={menu} onOpenChange={setMenu}>
@@ -272,7 +328,7 @@ function Shell() {
           </div>
         </div>
       </header>
-      <div className="wrap connection" role="status">
+      <div className="sr-only" role="status" aria-live="polite">
         {rt.status === "connected"
           ? "● Atualizações em tempo real"
           : rt.status === "connecting"
@@ -296,7 +352,9 @@ function Shell() {
       </main>
       <MarketFooter />
       <footer className="footer wrap">
-        <span>◆ KURIO · Demonstração</span>
+        <span className="copyright">
+          © 2026 Kurio. Propriedade digital para todos.
+        </span>
         <span>Compras e carteiras simuladas.</span>
         <DemoControls />
         {session?.user && (
@@ -312,6 +370,27 @@ function Shell() {
           </button>
         )}
       </footer>
+      <nav className="mobile-bottom-nav" aria-label="Navegação móvel">
+        <Link to="/" aria-label="Início">
+          <House size={20} />
+        </Link>
+        <Link to="/profile" hash="favoritos" aria-label="Favoritos">
+          <Heart size={20} />
+        </Link>
+        <Link
+          to="/wallets"
+          className="nav-wallet"
+          aria-label="Minhas carteiras"
+        >
+          <ScanLine size={28} />
+        </Link>
+        <Link to="/cart" aria-label="Abrir carrinho">
+          <ShoppingCart size={20} />
+        </Link>
+        <Link to="/profile" aria-label="Perfil">
+          <UserRound size={20} />
+        </Link>
+      </nav>
     </>
   );
 }

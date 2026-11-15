@@ -71,7 +71,7 @@ export function DemoControls() {
             variant="outline"
             onClick={() => run("nft", { id: "cyber-ape", price: "0.95" })}
           >
-            Alterar preço de Cyber Ape
+            Alterar preço de Emerald Ape
           </Button>
           <Button variant="outline" onClick={() => run("disconnect")}>
             Interromper Socket.IO

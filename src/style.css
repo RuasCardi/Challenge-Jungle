@@ -2598,6 +2598,394 @@ h2 {
   border-color: #8d6142;
   border-radius: 4px;
 }
+
+/* Reference layout: warm Kurio marketplace */
+:root {
+  font-family: "Courier New", monospace;
+  color: #f4e8dc;
+  background: #120a07;
+}
+
+body {
+  background: #120a07;
+}
+
+.wrap {
+  width: min(1180px, calc(100% - 64px));
+}
+
+.topbar {
+  background: #120a07;
+  border-bottom: 1px solid #4b2b1d;
+}
+
+.nav {
+  height: 68px;
+}
+
+.brand {
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+}
+
+.brand .logo {
+  display: none;
+}
+
+.navlinks a,
+.nav-learn {
+  color: #eee0d5;
+  font-size: 0.78rem;
+}
+
+.navlinks a[data-status="active"],
+.navlinks a:hover,
+.nav-learn:hover {
+  color: #e89a48;
+}
+
+.navright .btn {
+  padding: 8px 13px;
+}
+
+.connection {
+  display: none;
+}
+
+.hero {
+  min-height: 315px;
+  padding: 30px 32px 38px;
+  gap: 60px;
+}
+
+.hero-copy h1 {
+  font-size: clamp(2rem, 3.2vw, 3.1rem);
+  letter-spacing: 0.02em;
+  line-height: 1.25;
+}
+
+.hero-copy em {
+  color: inherit;
+}
+
+.hero-copy > p {
+  color: #c9ab91;
+  font-size: 0.71rem;
+  line-height: 1.7;
+}
+
+.hero-art {
+  height: 390px;
+  max-width: 440px;
+  border-radius: 14px;
+  border: 0;
+  box-shadow: none;
+}
+
+.hero-art img {
+  object-fit: cover;
+}
+
+.float-card {
+  display: none;
+}
+
+.catalog {
+  padding: 0 32px 78px;
+}
+
+.catalog-sidebar {
+  background: #271712;
+}
+
+.catalog-results {
+  min-width: 0;
+}
+
+.catalog-title,
+.catalog-filters {
+  display: none;
+}
+
+.catalog-tabs {
+  margin-bottom: 20px;
+  color: #e8cdbb;
+}
+
+.catalog-tabs button.active {
+  font-weight: 700;
+}
+
+.cards {
+  gap: 20px;
+}
+
+.nftcard {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.nftcard > a {
+  display: block;
+}
+
+.nftcard img {
+  height: auto;
+  aspect-ratio: 1;
+  border-radius: 9px;
+  object-fit: cover;
+}
+
+.cardbody {
+  padding: 12px 0;
+}
+
+.cardbody h3 {
+  margin-bottom: 4px;
+  font-size: 0.78rem;
+  font-weight: 400;
+}
+
+.cardbody p {
+  display: none;
+}
+
+.cardbottom strong {
+  color: #e99a43;
+  font-size: 0.78rem;
+}
+
+.heart {
+  right: 8px;
+  top: 8px;
+  bottom: auto;
+  width: 30px;
+  height: 30px;
+  background: #3a2117;
+}
+
+.collection-banners,
+.creators-section,
+.market-footer {
+  width: min(1180px, calc(100% - 64px));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.detailinfo h1 {
+  letter-spacing: 0.01em;
+}
+
+.detailart img {
+  object-fit: cover;
+}
+
+.detailgrid .detailart {
+  border-radius: 14px;
+}
+
+.mobile-search,
+.mobile-bottom-nav {
+  display: none;
+}
+
+@media (max-width: 650px) {
+  body {
+    padding-bottom: 82px;
+  }
+
+  .wrap,
+  .collection-banners,
+  .creators-section,
+  .market-footer {
+    width: calc(100% - 48px);
+  }
+
+  .topbar,
+  .connection {
+    display: none;
+  }
+
+  .mobile-search {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 40px 24px 16px;
+  }
+
+  .mobile-search > a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-height: 46px;
+    padding: 0 14px;
+    border-radius: 10px;
+    color: #bb9c84;
+    background: #271712;
+    font-weight: 700;
+    font-size: 0.82rem;
+  }
+
+  .mobile-search > button {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    background: #d98b43;
+    color: #241108;
+  }
+
+  .hero {
+    display: block;
+    min-height: 0;
+    padding: 0;
+    margin-bottom: 18px;
+  }
+
+  .hero-copy {
+    position: absolute;
+    z-index: 1;
+    padding: 18px 16px;
+    width: 62%;
+  }
+
+  .hero-copy h1 {
+    font-size: 1.18rem;
+    line-height: 1.35;
+    max-width: 190px;
+  }
+
+  .hero-copy > p {
+    font-size: 0.68rem;
+    line-height: 1.55;
+    max-width: 190px;
+  }
+
+  .hero-copy .actions {
+    margin: 4px 0;
+  }
+
+  .hero-copy .btn {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #e79642;
+    font-size: 0.7rem;
+  }
+
+  .hero-art {
+    height: 190px;
+    max-width: none;
+    border-radius: 25px;
+    background: #392216;
+  }
+
+  .hero-art img {
+    width: 47%;
+    height: 140px;
+    margin: 10px 16px 0 auto;
+    border-radius: 16px;
+  }
+
+  .catalog {
+    padding: 0 0 38px;
+  }
+
+  .catalog-layout {
+    display: block;
+  }
+
+  .catalog-tabs {
+    gap: 10px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 0.77rem;
+  }
+
+  .catalog-tabs .sort-control {
+    display: none;
+  }
+
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 20px;
+  }
+
+  .nftcard img {
+    border-radius: 17px;
+  }
+
+  .cardbody {
+    padding: 10px 8px;
+  }
+
+  .cardbody h3,
+  .cardbottom strong {
+    font-size: 0.82rem;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 30;
+    height: 82px;
+    border-radius: 28px 28px 0 0;
+    background: #271712;
+  }
+
+  .mobile-bottom-nav a {
+    color: #c9ad8f;
+  }
+
+  .mobile-bottom-nav a:hover {
+    color: #e89a48;
+  }
+
+  .market-footer,
+  .footer,
+  .collection-banners,
+  .creators-section {
+    display: none;
+  }
+
+  .detailgrid {
+    display: block;
+  }
+
+  body:has(.detailgrid) .mobile-search {
+    display: none;
+  }
+
+  body:has(.detailgrid) .crumb {
+    display: none;
+  }
+
+  .detailgrid > div:first-child {
+    margin: 0 -24px;
+  }
+
+  .detailgrid .detailart {
+    border-radius: 28px 28px 0 0;
+  }
+
+  .detailinfo {
+    margin: -2px -24px 0;
+    padding: 28px 24px;
+    border-radius: 28px 28px 0 0;
+    background: #271712;
+  }
+
+  .detailinfo h1 {
+    font-size: 1.25rem;
+  }
+}
 .muted,
 .crumb,
 .cardbody p,
@@ -2929,6 +3317,96 @@ h2 {
 }
 .related-card strong {
   color: #efaa69;
+}
+
+.featured-nft {
+  margin: 24px -15px -17px;
+  padding: 18px 15px 0;
+  text-align: center;
+  background: #2a1710;
+  color: #f0a04a;
+}
+
+.featured-nft strong {
+  display: block;
+  font-size: 1.05rem;
+}
+
+.featured-nft h3 {
+  color: #f7eee7;
+  margin: 13px 0;
+  font-size: 0.95rem;
+}
+
+.featured-nft img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center;
+}
+
+.journal-section {
+  width: min(1180px, calc(100% - 64px));
+  margin: 0 auto 70px;
+}
+
+.journal-section .sectionheading {
+  display: block;
+}
+
+.journal-section .sectionheading p {
+  font-size: 0.78rem;
+}
+
+.journal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.journal-card {
+  background: #24150e;
+  padding-bottom: 17px;
+}
+
+.journal-card img {
+  width: 100%;
+  aspect-ratio: 1.45;
+  object-fit: cover;
+}
+
+.journal-card small,
+.journal-card h3,
+.journal-card p,
+.journal-card a {
+  display: block;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.journal-card small {
+  color: #a98973;
+  margin-top: 12px;
+  font-size: 0.62rem;
+}
+
+.journal-card h3 {
+  font-size: 0.84rem;
+  line-height: 1.35;
+  margin-top: 12px;
+  margin-bottom: 8px;
+}
+
+.journal-card p {
+  color: #bda18e;
+  font-size: 0.7rem;
+  line-height: 1.5;
+}
+
+.journal-card a {
+  color: #e99a43;
+  font-size: 0.7rem;
 }
 .auth {
   padding: 0;

@@ -2,7 +2,7 @@ import { expect, type Page } from "@playwright/test";
 export async function ready(page: Page) {
   await page.goto("/");
   await expect(
-    page.getByRole("heading", { name: "Descubra NFTs" }),
+    page.getByRole("region", { name: "Catálogo de NFTs" }),
   ).toBeVisible();
   await expect(page.locator(".nftcard")).toHaveCount(9);
   await expect(
@@ -30,6 +30,8 @@ export async function control(page: Page, action: string, body: unknown = {}) {
   );
 }
 export async function readApi(page: Page, path: string) {
+  // A reload can finish before worker.start() and the React mount complete.
+  await expect(page.locator("main")).toBeVisible();
   return page.evaluate(async (path) => {
     const token = localStorage.getItem("novanft-token");
     const r = await fetch(`/api/${path}`, {

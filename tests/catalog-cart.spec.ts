@@ -30,7 +30,7 @@ test("busca, filtros combinados, ordenação, paginação e histórico", async (
 test("respostas obsoletas não substituem busca atual", async ({ page }) => {
   await control(page, "scenario", { name: "variable" });
   await page.getByLabel("Buscar NFTs").fill("g");
-  await page.getByLabel("Buscar NFTs").fill("Neon");
+  await page.getByLabel("Buscar NFTs").fill("Neon Cat");
   await expect(page.locator(".nftcard h3")).toHaveText("Neon Cat #1337");
   await page.waitForTimeout(1300);
   await expect(page.locator(".nftcard h3")).toHaveText("Neon Cat #1337");
@@ -42,7 +42,7 @@ test("detalhe direto, galeria, edição esgotada, limite e 404", async ({
   await page.getByRole("button", { name: "Ver imagem 2" }).click();
   await expect(page.locator(".detailart img")).toHaveAttribute(
     "src",
-    "/assets/2.webp",
+    "/assets/ape-sage.webp",
   );
   await page.getByLabel("Edição", { exact: true }).selectOption("limited");
   await expect(
@@ -101,7 +101,7 @@ test("carrinho, cupom, quantidades, remoção, refresh e login", async ({
 }) => {
   await add(page);
   await page.goto("/cart");
-  await page.getByRole("button", { name: "Aumentar Cyber Ape" }).click();
+  await page.getByRole("button", { name: "Aumentar Emerald Ape #042" }).click();
   await expect(page.locator(".quantity>span")).toHaveText("2");
   await page.getByLabel("Cupom de desconto").fill("INVALIDO");
   await page.getByRole("button", { name: "Aplicar", exact: true }).click();
@@ -111,7 +111,7 @@ test("carrinho, cupom, quantidades, remoção, refresh e login", async ({
   await expect(page.getByRole("alert")).toHaveText("Cupom expirado.");
   await page.getByLabel("Cupom de desconto").fill("NFT10");
   await page.getByRole("button", { name: "Aplicar", exact: true }).click();
-  await expect(page.getByText("1,55 ETH", { exact: true })).toBeVisible();
+  await expect(page.getByText("2,162 ETH", { exact: true })).toBeVisible();
   await page.reload();
   await expect(page.locator(".quantity>span")).toHaveText("2");
   await login(page);
@@ -120,10 +120,10 @@ test("carrinho, cupom, quantidades, remoção, refresh e login", async ({
   await page
     .getByRole("button", { name: "Cupom NFT10 aplicado · remover" })
     .click();
-  await expect(page.getByText("1,72 ETH", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Diminuir Cyber Ape" }).click();
-  await expect(page.getByText("0,87 ETH", { exact: true })).toBeVisible();
-  await page.getByRole("button", { name: "Remover Cyber Ape" }).click();
+  await expect(page.getByText("2,40 ETH", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Diminuir Emerald Ape #042" }).click();
+  await expect(page.getByText("1,21 ETH", { exact: true })).toBeVisible();
+  await page.getByRole("button", { name: "Remover Emerald Ape #042" }).click();
   await expect(
     page.getByRole("heading", { name: "Seu carrinho está vazio" }),
   ).toBeVisible();
@@ -189,5 +189,5 @@ test("preço ao confirmar exige aceitar nova cotação", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Pedido confirmado!" }),
   ).toBeVisible();
-  await expect(page.getByText("0,97 ETH", { exact: true })).toBeVisible();
+  await expect(page.getByText("1,31 ETH", { exact: true })).toBeVisible();
 });

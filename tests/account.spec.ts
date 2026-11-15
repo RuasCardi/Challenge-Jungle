@@ -7,8 +7,12 @@ test("cadastro, conflito e validação", async ({ page }) => {
     .getByLabel("Nome completo", { exact: true })
     .fill("Ana Colecionadora");
   await page.getByLabel("E-mail", { exact: true }).fill("demo@nft.com");
-  await page.getByLabel("Senha (mínimo").fill("Senha123!");
-  await page.getByLabel("Confirmar senha").fill("Senha123!");
+  await page
+    .getByLabel("Senha (mínimo 8 caracteres, letras e números)", {
+      exact: true,
+    })
+    .fill("Senha123!");
+  await page.getByLabel("Confirmar senha", { exact: true }).fill("Senha123!");
   await page.getByRole("button", { name: "Criar conta", exact: true }).click();
   await expect(
     page.getByText("E-mail já cadastrado.", { exact: true }),
@@ -21,8 +25,9 @@ test("cadastro, conflito e validação", async ({ page }) => {
     page.getByRole("heading", { name: "Ana Colecionadora" }),
   ).toBeVisible();
   const stored = await page.evaluate(() =>
-    localStorage.getItem("novanft-db-v3"),
+    localStorage.getItem("novanft-db-v6"),
   );
+  expect(stored).not.toBeNull();
   expect(stored).not.toContain("Senha123!");
   expect(stored).not.toContain("Demo123!");
 });
@@ -61,10 +66,14 @@ test("logout, troca de usuário, pedidos e favoritos isolados", async ({
   ).toBeVisible();
   const url = page.url();
   const id = url.split("/").at(-1)!;
-  await page.getByRole("button", { name: "Sair", exact: true }).click();
+  await page.goto("/profile");
+  await page
+    .getByRole("button", { name: "Sair da conta", exact: true })
+    .click();
   await expect(
-    page.getByRole("link", { name: "Entrar", exact: true }),
+    page.getByRole("region", { name: "Catálogo de NFTs" }),
   ).toBeVisible();
+  expect((await readApi(page, "session")).data.user).toBeNull();
   await page.goto(url);
   await expect(page).toHaveURL(/login/);
   await login(page, "maria@nft.com");
@@ -99,7 +108,9 @@ test("perfil, avatar, conflito, senha e persistência", async ({ page }) => {
     page.getByRole("img", { name: "Avatar de Colecionador Teste" }),
   ).toBeVisible();
   await page.getByLabel("Senha atual", { exact: true }).fill("errada");
-  await page.getByLabel("Nova senha").fill("NovaSenha123!");
+  await page
+    .getByLabel("Nova senha (8 caracteres, letras e números)", { exact: true })
+    .fill("NovaSenha123!");
   await page.getByRole("button", { name: "Atualizar senha" }).click();
   await expect(
     page.getByText("Senha atual incorreta.", { exact: true }).first(),

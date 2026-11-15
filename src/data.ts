@@ -15,6 +15,9 @@ export type NFT = {
   gallery: string[];
   category: string;
   creator: string;
+  network: Network | "Solana";
+  isNew: boolean;
+  trending: boolean;
   description: string;
   editions: Edition[];
   version: number;
@@ -32,6 +35,7 @@ export type Wallet = {
   referralCode?: string;
   email?: string;
   ensName?: string;
+  secondaryAddress?: string;
   primary: boolean;
 };
 export type PublicAccount = {
@@ -39,6 +43,9 @@ export type PublicAccount = {
   name: string;
   email: string;
   avatar?: string;
+  username?: string;
+  ensName?: string;
+  walletNickname?: string;
   wallets: Wallet[];
 };
 export type Session = { user: PublicAccount | null; expiresAt?: number };
@@ -90,6 +97,10 @@ export type CatalogParams = {
   sort?: string;
   page?: number;
   available?: boolean;
+  network?: string;
+  minPrice?: string;
+  maxPrice?: string;
+  tab?: "all" | "new" | "trending";
 };
 export type CatalogResult = {
   items: NFT[];
@@ -97,6 +108,9 @@ export type CatalogResult = {
   page: number;
   pages: number;
   collections: string[];
+  categories: string[];
+  categoryCounts: Record<string, number>;
+  networkCounts: Record<string, number>;
 };
 export type ApiError = {
   code: string;

@@ -42,10 +42,12 @@ test("duplo clique, pendência, reconexão e refresh não duplicam compra", asyn
   ).toBeVisible();
   const id = page.url().split("/").at(-1)!;
   await control(page, "disconnect");
-  await expect(page.locator(".connection")).toContainText("Reconectando");
-  await expect(page.locator(".connection")).toContainText(
-    "Atualizações em tempo real",
-  );
+  await expect(
+    page.getByRole("status").filter({ hasText: "Reconectando" }),
+  ).toContainText("Reconectando");
+  await expect(
+    page.getByRole("status").filter({ hasText: "Atualizações em tempo real" }),
+  ).toContainText("Atualizações em tempo real");
   await page.reload();
   await expect(
     page.getByRole("heading", { name: "Pagamento pendente" }),

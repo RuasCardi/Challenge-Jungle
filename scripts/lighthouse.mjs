@@ -14,6 +14,8 @@ const preview = process.env.AUDIT_URL
       [
         "node_modules/vite/bin/vite.js",
         "preview",
+        "--configLoader",
+        "runner",
         "--host",
         "127.0.0.1",
         "--port",

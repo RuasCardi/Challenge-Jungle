@@ -1,6 +1,19 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
-import { LogOut, Wallet as WalletIcon } from "lucide-react";
+import {
+  ChartNoAxesCombined,
+  Download,
+  Eye,
+  EyeOff,
+  Heart,
+  ImagePlus,
+  LogOut,
+  MapPin,
+  ShoppingCart,
+  TriangleAlert,
+  UserRound,
+  Wallet as WalletIcon,
+} from "lucide-react";
 import { api } from "../api";
 import {
   acceptSession,
@@ -28,6 +41,56 @@ import {
   DialogTitle,
   DialogDescription,
 } from "../components/ui/dialog";
+import "./account.css";
+
+function PasswordField({
+  label,
+  name,
+  value,
+  onChange,
+  error,
+  required = true,
+  minLength,
+  autoComplete,
+  placeholder,
+}: {
+  label: string;
+  name: string;
+  value: string;
+  onChange: (value: string) => void;
+  error?: unknown;
+  required?: boolean;
+  minLength?: number;
+  autoComplete: string;
+  placeholder?: string;
+}) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <div className="account-password">
+      <Field label={label} name={name} error={error}>
+        <input
+          type={visible ? "text" : "password"}
+          required={required}
+          minLength={minLength}
+          autoComplete={autoComplete}
+          value={value}
+          onChange={(event) => onChange(event.target.value)}
+          placeholder={placeholder}
+        />
+      </Field>
+      <button
+        className="password-toggle"
+        type="button"
+        aria-label={`${visible ? "Ocultar" : "Mostrar"} ${label.toLowerCase()}`}
+        aria-pressed={visible}
+        onClick={() => setVisible(!visible)}
+      >
+        {visible ? <Eye size={18} /> : <EyeOff size={18} />}
+      </button>
+    </div>
+  );
+}
+
 export function Login() {
   useTitle("Entrar");
   return <AuthForm signup={false} />;
@@ -44,9 +107,12 @@ function AuthForm({ signup }: { signup: boolean }) {
   const [password, setPassword] = useState(signup ? "" : "Demo123!");
   const [confirmation, setConfirmation] = useState("");
   const [localError, setLocalError] = useState("");
+  const [info, setInfo] = useState("");
   const action = useAction(signup ? api.signup : api.login, []);
   return (
-    <div className="auth">
+    <div
+      className={`auth account-auth ${signup ? "account-signup" : "account-login"}`}
+    >
       <AuthBackdrop />
       <Dialog
         open
@@ -54,11 +120,13 @@ function AuthForm({ signup }: { signup: boolean }) {
           if (!open) void navigate({ to: "/" });
         }}
       >
-        <DialogContent className="auth-dialog">
+        <DialogContent
+          className={`auth-dialog account-auth-dialog ${signup ? "signup-dialog" : "login-dialog"}`}
+        >
           <form
             className="authbox"
-            onSubmit={(e) => {
-              e.preventDefault();
+            onSubmit={(event) => {
+              event.preventDefault();
               if (signup && password !== confirmation) {
                 setLocalError("As senhas não coincidem.");
                 return;
@@ -80,93 +148,252 @@ function AuthForm({ signup }: { signup: boolean }) {
               );
             }}
           >
-            <div className="logo biglogo">◆</div>
+            <Link
+              className="auth-mobile-brand"
+              to="/"
+              aria-label="KURIO — voltar ao início"
+            >
+              KURIO
+            </Link>
+            <div className="auth-tabs" aria-label="Acesso à conta">
+              <Link
+                to="/login"
+                search={{ redirect: search.redirect }}
+                className={!signup ? "active" : ""}
+              >
+                Entrar
+              </Link>
+              <span aria-hidden="true">|</span>
+              <Link
+                to="/signup"
+                search={{ redirect: search.redirect }}
+                className={signup ? "active" : ""}
+              >
+                Criar conta
+              </Link>
+            </div>
             <DialogTitle asChild>
-              <h1>{signup ? "Crie sua conta" : "Bem-vindo de volta"}</h1>
+              <h1 className="auth-mobile-title">
+                {signup ? "Criar perfil de colecionador" : "Entrar"}
+              </h1>
             </DialogTitle>
-            <DialogDescription className="muted">
+            <DialogDescription className="auth-description">
               {search.redirect
                 ? "Entre para retomar sua navegação."
-                : "Sua próxima coleção começa aqui."}
+                : signup
+                  ? "Crie seu perfil de colecionador e conecte uma carteira quando quiser."
+                  : "Entre para gerenciar sua carteira, coleção e perfil de criador."}
             </DialogDescription>
-            {signup && (
-              <Field label="Nome completo" name="name" error={action.error}>
+            <div className="auth-inputs">
+              {signup && (
+                <Field label="Nome completo" name="name" error={action.error}>
+                  <input
+                    required
+                    minLength={2}
+                    autoComplete="name"
+                    value={name}
+                    onChange={(event) => setName(event.target.value)}
+                    placeholder="Nome de usuário"
+                  />
+                </Field>
+              )}
+              <Field label="E-mail" name="email" error={action.error}>
                 <input
+                  type="email"
                   required
-                  minLength={2}
-                  autoComplete="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  autoComplete="email"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                  placeholder={
+                    signup ? "Digite seu e-mail" : "contato@email.com"
+                  }
                 />
               </Field>
-            )}
-            <Field label="E-mail" name="email" error={action.error}>
-              <input
-                type="email"
-                required
-                autoComplete="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Field>
-            <Field
-              label={
-                signup
-                  ? "Senha (mínimo 8 caracteres, letras e números)"
-                  : "Senha"
-              }
-              name="password"
-              error={action.error}
-            >
-              <input
-                type="password"
+              <PasswordField
+                label={
+                  signup
+                    ? "Senha (mínimo 8 caracteres, letras e números)"
+                    : "Senha"
+                }
+                name="password"
+                error={action.error}
                 required
                 minLength={signup ? 8 : undefined}
                 autoComplete={signup ? "new-password" : "current-password"}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={setPassword}
+                placeholder="Senha"
               />
-            </Field>
-            {signup && (
-              <Field label="Confirmar senha" name="confirmation">
-                <input
-                  type="password"
+              {signup && (
+                <PasswordField
+                  label="Confirmar senha"
+                  name="confirmation"
                   required
                   minLength={8}
                   autoComplete="new-password"
                   value={confirmation}
-                  onChange={(e) => setConfirmation(e.target.value)}
-                  aria-describedby={
-                    localError ? "confirmation-error" : undefined
-                  }
+                  onChange={setConfirmation}
+                  placeholder="Confirmar senha"
                 />
-              </Field>
+              )}
+            </div>
+            {!signup && (
+              <button
+                className="forgot-password textbutton"
+                type="button"
+                onClick={() =>
+                  setInfo(
+                    "A recuperação por e-mail não está disponível nesta demonstração. Use a conta fictícia demo@nft.com e a senha Demo123!.",
+                  )
+                }
+              >
+                Esqueceu a senha?
+              </button>
             )}
             <ErrorText id="confirmation-error" error={localError} />
             <ErrorText error={action.error} />
-            <Button className="full" disabled={action.isPending}>
+            <Button className="full auth-submit" disabled={action.isPending}>
               {action.isPending
                 ? "Aguarde…"
                 : signup
                   ? "Criar conta"
                   : "Entrar"}
             </Button>
-            <p className="center muted">
-              {signup ? "Já tem conta?" : "Ainda não tem conta?"}{" "}
+            <div className="auth-divider">
+              <span>Ou continue com</span>
+            </div>
+            <div className="social-logins">
+              <button
+                type="button"
+                onClick={() =>
+                  setInfo(
+                    "Login com Google não está disponível nesta demonstração. Entre com seu e-mail e senha.",
+                  )
+                }
+              >
+                <span className="google-letter" aria-hidden="true">
+                  G
+                </span>
+                Continuar com Google
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  setInfo(
+                    "Login com Facebook não está disponível nesta demonstração. Entre com seu e-mail e senha.",
+                  )
+                }
+              >
+                <span className="facebook-letter" aria-hidden="true">
+                  f
+                </span>
+                Continuar com Facebook
+              </button>
+            </div>
+            {info && (
+              <p className="auth-feedback" role="status">
+                {info}
+              </p>
+            )}
+            <p className="auth-switch">
+              {signup ? "Já tem uma conta? " : "Novo na Kurio? "}
               <Link
                 to={signup ? "/login" : "/signup"}
                 search={{ redirect: search.redirect }}
               >
-                {signup ? "Entrar" : "Criar conta"}
+                {signup ? "Entre" : "Crie uma conta"}
               </Link>
             </p>
-            <p className="demo-hint">Conta demo: demo@nft.com / Demo123!</p>
           </form>
         </DialogContent>
       </Dialog>
     </div>
   );
 }
+
+function AccountSidebar({ selected }: { selected: "profile" | "wallets" }) {
+  const navigate = useNavigate();
+  const logout = useAction(api.logout, []);
+  const [notice, setNotice] = useState("");
+  return (
+    <aside className="panel sidepanel account-sidebar reference-account-sidebar">
+      <h2>Meu perfil</h2>
+      <nav className="account-nav" aria-label="Conta">
+        <Link className={selected === "profile" ? "active" : ""} to="/profile">
+          <UserRound size={18} />
+          Dados do perfil
+        </Link>
+        <Link className={selected === "wallets" ? "active" : ""} to="/wallets">
+          <MapPin size={18} />
+          Carteiras
+        </Link>
+        <Link to="/profile" hash="atividade">
+          <ShoppingCart size={18} />
+          Atividade
+        </Link>
+        <Link to="/profile" hash="favoritos">
+          <Heart size={18} />
+          Lista de interesse
+        </Link>
+        <button
+          type="button"
+          onClick={() =>
+            setNotice("Ofertas não estão disponíveis nesta demonstração.")
+          }
+        >
+          <ChartNoAxesCombined size={18} />
+          Ofertas
+        </button>
+        <button
+          type="button"
+          onClick={() =>
+            setNotice(
+              "Arquivos para download não estão disponíveis nesta demonstração.",
+            )
+          }
+        >
+          <Download size={18} />
+          Arquivos baixados
+        </button>
+        <button
+          type="button"
+          onClick={() =>
+            setNotice(
+              "Suporte: consulte as instruções e as contas fictícias no README do projeto.",
+            )
+          }
+        >
+          <TriangleAlert size={18} />
+          Suporte
+        </button>
+      </nav>
+      <button
+        className="textbutton account-exit"
+        type="button"
+        aria-label="Sair da conta"
+        disabled={logout.isPending}
+        onClick={() =>
+          logout.mutate(undefined, {
+            onSuccess: async () => {
+              await clearSession();
+              await navigate({ to: "/" });
+            },
+          })
+        }
+      >
+        <LogOut size={19} />
+        Sair
+      </button>
+      <ErrorText error={logout.error} />
+      {notice && (
+        <p className="account-nav-notice" role="status">
+          {notice}
+        </p>
+      )}
+    </aside>
+  );
+}
+
 export function Profile() {
   useTitle("Meu perfil");
   const { data: session } = useSession();
@@ -188,107 +415,153 @@ function FavoriteItem({ id }: { id: string }) {
   ) : null;
 }
 function ProfileForm({ user }: { user: PublicAccount }) {
-  const navigate = useNavigate();
   const [name, setName] = useState(user.name);
+  const [username, setUsername] = useState(user.username || "");
+  const [ensName, setEnsName] = useState(user.ensName || "");
+  const [walletNickname, setWalletNickname] = useState(
+    user.walletNickname || "",
+  );
   const [email, setEmail] = useState(user.email);
   const [avatar, setAvatar] = useState(user.avatar);
+  const [avatarChanged, setAvatarChanged] = useState(false);
   const [avatarLoading, setAvatarLoading] = useState(false);
   const [fileError, setFileError] = useState("");
   const [oldPassword, setOld] = useState("");
   const [newPassword, setNew] = useState("");
-  const update = useAction(api.profile, ["session", "profile"]);
+  const [confirmation, setConfirmation] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const update = useAction(api.profile, ["session", "profile", "wallets"]);
   const pass = useAction(api.password, []);
-  const logout = useAction(api.logout, []);
   const orders = useOrders();
   const favorites = useFavorites();
   const [notice] = useState(() =>
     sessionStorage.getItem("novanft-login-notice"),
   );
   return (
-    <div className="wrap page">
-      <h1>Meu perfil</h1>
+    <div className="wrap page account-page profile-page">
       {notice && (
         <p className="notice" role="status">
           {notice}
         </p>
       )}
-      <div className="profilegrid">
-        <aside className="panel sidepanel account-sidebar">
-          <div className="profileavatar">
-            {user.avatar ? (
-              <img src={user.avatar} alt={`Avatar de ${user.name}`} />
-            ) : (
-              user.name[0]
-            )}
-          </div>
-          <h2>{user.name}</h2>
-          <p className="muted">{user.email}</p>
-          <nav className="account-nav" aria-label="Conta">
-            <strong>Meu perfil</strong>
-            <a className="active" href="#dados">♙ &nbsp; Dados do perfil</a>
-            <Link to="/wallets">⌾ &nbsp; Carteiras</Link>
-            <a href="#atividade">🛒 &nbsp; Atividade</a>
-            <a href="#favoritos">♡ &nbsp; Lista de interesse</a>
-            <a href="#ofertas">◉ &nbsp; Ofertas</a>
-            <a href="#downloads">♧ &nbsp; Arquivos baixados</a>
-            <a href="#suporte">⚠ &nbsp; Suporte</a>
-          </nav>
-          <Link className="btn outline full" to="/wallets">
-            <WalletIcon size={17} /> Minhas carteiras
-          </Link>
-          <Button
-            variant="ghost"
-            className="full"
-            disabled={logout.isPending}
-            onClick={() =>
-              logout.mutate(undefined, {
-                onSuccess: async () => {
-                  await clearSession();
-                  await navigate({ to: "/" });
-                },
-              })
-            }
-          >
-            <LogOut size={17} /> Sair da conta
-          </Button>
-          <ErrorText error={logout.error} />
-        </aside>
-        <div className="panel profile-form-panel" id="dados">
-          <h2>Informações pessoais</h2>
+      <div className="profilegrid account-grid">
+        <AccountSidebar selected="profile" />
+        <div className="profile-form-panel reference-profile-panel" id="dados">
+          <h1>Perfil do colecionador</h1>
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              update.mutate({ name, email, avatar });
+            id="collector-profile"
+            className="collector-fields"
+            onSubmit={(event) => {
+              event.preventDefault();
+              update.mutate({
+                name,
+                username,
+                ensName,
+                walletNickname,
+                email,
+                avatar,
+              });
             }}
           >
-            <Field label="Nome completo" name="name" error={update.error}>
+            <Field label="Nome de exibição" name="name" error={update.error}>
               <input
+                aria-label="Nome completo"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(event) => setName(event.target.value)}
                 minLength={2}
                 required
                 autoComplete="name"
+              />
+            </Field>
+            <Field label="Nome de usuário" name="username" error={update.error}>
+              <input
+                value={username}
+                onChange={(event) => setUsername(event.target.value)}
+                autoComplete="username"
+                pattern="@?[A-Za-z0-9._]{3,30}"
               />
             </Field>
             <Field label="E-mail" name="email" error={update.error}>
               <input
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
                 required
                 autoComplete="email"
               />
             </Field>
+            <div className="ens-control">
+              <Field label="Nome ENS" name="ensName" error={update.error}>
+                <input
+                  value={ensName.replace(/\.eth$/, "")}
+                  onChange={(event) =>
+                    setEnsName(
+                      event.target.value
+                        ? `${event.target.value.replace(/\.eth$/, "")}.eth`
+                        : "",
+                    )
+                  }
+                  autoComplete="off"
+                />
+              </Field>
+              <span className="ens-suffix" aria-hidden="true">
+                .eth⌄
+              </span>
+            </div>
             <Field
-              label="Avatar (PNG, JPEG ou WebP, até 400 KB)"
-              name="avatar"
+              label="Apelido da carteira"
+              name="walletNickname"
               error={update.error}
             >
               <input
+                value={walletNickname}
+                onChange={(event) => setWalletNickname(event.target.value)}
+                maxLength={50}
+              />
+            </Field>
+            <div className="profile-avatar-field">
+              <span>Avatar</span>
+              <div className="profile-avatar-controls">
+                <div className="profile-avatar-image">
+                  {avatar ? (
+                    <img
+                      src={avatar}
+                      alt={
+                        avatarChanged
+                          ? "Prévia do avatar"
+                          : `Avatar de ${user.name}`
+                      }
+                      width="50"
+                      height="50"
+                    />
+                  ) : (
+                    <ImagePlus size={22} />
+                  )}
+                </div>
+                <label className="btn avatar-upload" htmlFor="avatar">
+                  Alterar
+                </label>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAvatar(undefined);
+                    setAvatarChanged(true);
+                    setFileError("");
+                  }}
+                >
+                  Remover
+                </button>
+              </div>
+              <label className="sr-only" htmlFor="avatar">
+                Avatar (PNG, JPEG ou WebP, até 400 KB)
+              </label>
+              <input
+                className="sr-only"
+                id="avatar"
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
-                onChange={(e) => {
-                  const file = e.target.files?.[0];
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
                   if (!file) return;
                   if (
                     file.size > 400 * 1024 ||
@@ -304,6 +577,7 @@ function ProfileForm({ user }: { user: PublicAccount }) {
                   const reader = new FileReader();
                   reader.onload = () => {
                     setAvatar(String(reader.result));
+                    setAvatarChanged(true);
                     setAvatarLoading(false);
                   };
                   reader.onerror = () => {
@@ -315,86 +589,90 @@ function ProfileForm({ user }: { user: PublicAccount }) {
                   reader.readAsDataURL(file);
                 }}
               />
-            </Field>
-            {avatar && (
-              <div className="actions">
-                <img
-                  className="avatar-preview"
-                  src={avatar}
-                  alt="Prévia do avatar"
-                  width="72"
-                  height="72"
-                />
-                <button
-                  type="button"
-                  className="textbutton"
-                  onClick={() => setAvatar(undefined)}
-                >
-                  Remover avatar
-                </button>
-              </div>
-            )}
-            <ErrorText error={fileError || update.error} />
-            <Button disabled={update.isPending || avatarLoading || !!fileError}>
-              Salvar alterações
-            </Button>
-            {update.isSuccess && (
-              <p className="green" role="status">
-                Dados salvos.
-              </p>
-            )}
+            </div>
+            <div className="profile-feedback">
+              <ErrorText error={fileError || update.error} />
+              {update.isSuccess && (
+                <p className="green" role="status">
+                  Dados salvos.
+                </p>
+              )}
+            </div>
           </form>
-          <hr />
-          <h2>Alterar senha</h2>
+          <h2 className="change-password-title">Alterar senha</h2>
           <form
-            onSubmit={(e) => {
-              e.preventDefault();
+            className="profile-password-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              if (confirmation && confirmation !== newPassword) {
+                setPasswordError("As senhas não coincidem.");
+                return;
+              }
+              setPasswordError("");
               pass.mutate(
                 { oldPassword, newPassword },
                 {
                   onSuccess: () => {
                     setOld("");
                     setNew("");
+                    setConfirmation("");
                   },
                 },
               );
             }}
           >
-            <Field label="Senha atual" name="oldPassword" error={pass.error}>
-              <input
-                type="password"
-                value={oldPassword}
-                onChange={(e) => setOld(e.target.value)}
-                required
-                autoComplete="current-password"
-              />
-            </Field>
-            <Field
+            <PasswordField
+              label="Senha atual"
+              name="oldPassword"
+              error={pass.error}
+              autoComplete="current-password"
+              value={oldPassword}
+              onChange={setOld}
+            />
+            <PasswordField
               label="Nova senha (8 caracteres, letras e números)"
               name="newPassword"
               error={pass.error}
-            >
-              <input
-                type="password"
-                minLength={8}
-                value={newPassword}
-                onChange={(e) => setNew(e.target.value)}
-                required
-                autoComplete="new-password"
-              />
-            </Field>
-            <ErrorText error={pass.error} />
-            <Button variant="outline" disabled={pass.isPending}>
-              Atualizar senha
-            </Button>
+              autoComplete="new-password"
+              minLength={8}
+              value={newPassword}
+              onChange={setNew}
+            />
+            <PasswordField
+              label="Confirmar nova senha"
+              name="newPasswordConfirmation"
+              autoComplete="new-password"
+              minLength={8}
+              required={false}
+              value={confirmation}
+              onChange={setConfirmation}
+            />
+            <ErrorText error={passwordError || pass.error} />
+            {(oldPassword || newPassword || confirmation) && (
+              <Button variant="outline" disabled={pass.isPending}>
+                Atualizar senha
+              </Button>
+            )}
             {pass.isSuccess && (
               <p className="green" role="status">
                 Senha alterada.
               </p>
             )}
           </form>
+          <Button
+            className="profile-save"
+            form="collector-profile"
+            aria-label="Salvar alterações"
+            disabled={update.isPending || avatarLoading || !!fileError}
+          >
+            {update.isPending ? "Salvando…" : "Salvar"}
+          </Button>
         </div>
       </div>
+      <section className="account-identity">
+        <h2>{user.name}</h2>
+        <p className="muted">{user.email}</p>
+      </section>
       <section className="panel account-section" id="favoritos">
         <h2>Meus favoritos</h2>
         {favorites.query.isPending ? (
@@ -421,18 +699,18 @@ function ProfileForm({ user }: { user: PublicAccount }) {
         ) : orders.error ? (
           <Failure error={orders.error} retry={orders.refetch} />
         ) : orders.data?.length ? (
-          orders.data.map((o) => (
+          orders.data.map((order) => (
             <Link
               className="line"
-              key={o.id}
+              key={order.id}
               to="/order/$id"
-              params={{ id: o.id }}
+              params={{ id: order.id }}
             >
-              <strong>{o.id}</strong>
+              <strong>{order.id}</strong>
               <span>
-                {o.status === "confirmed"
+                {order.status === "confirmed"
                   ? "Confirmado"
-                  : o.status === "pending"
+                  : order.status === "pending"
                     ? "Pendente"
                     : "Recusado"}
               </span>
@@ -445,6 +723,7 @@ function ProfileForm({ user }: { user: PublicAccount }) {
     </div>
   );
 }
+
 const emptyWallet: Wallet = {
   id: "",
   name: "",
@@ -464,175 +743,245 @@ export function Wallets() {
   const query = useWallets();
   const [form, setForm] = useState<Wallet>(emptyWallet);
   const save = useAction(api.wallet, ["wallets", "session"]);
-  const logout = useAction(api.logout, []);
-  const navigate = useNavigate();
   const set = (partial: Partial<Wallet>) =>
     setForm((previous) => ({ ...previous, ...partial }));
   if (!session?.user) return null;
   const account = session.user;
   return (
-    <div className="wrap page">
-      <div className="crumb">
-        <Link to="/profile">Meu perfil</Link> / Carteiras
-      </div>
-      <div className="profilegrid">
-        <aside className="panel sidepanel account-sidebar">
-          <h2>Meu perfil</h2>
-          <nav className="account-nav" aria-label="Conta">
-            <Link to="/profile">♙ &nbsp; Dados do perfil</Link>
-            <a className="active" href="#carteiras">⌾ &nbsp; Carteiras</a>
-            <a href="#atividade">🛒 &nbsp; Atividade</a>
-            <a href="#favoritos">♡ &nbsp; Lista de interesse</a>
-            <a href="#ofertas">◉ &nbsp; Ofertas</a>
-            <a href="#downloads">♧ &nbsp; Arquivos baixados</a>
-            <a href="#suporte">⚠ &nbsp; Suporte</a>
-          </nav>
-          <button className="textbutton account-exit" type="button" disabled={logout.isPending} onClick={() => logout.mutate(undefined, { onSuccess: async () => { await clearSession(); await navigate({ to: "/" }); } })}>⇥ &nbsp; Sair</button>
-        </aside>
-        <div className="wallet-main" id="carteiras">
+    <div className="wrap page account-page wallets-page">
+      <div className="profilegrid account-grid">
+        <AccountSidebar selected="wallets" />
+        <div className="wallet-main reference-wallet-main" id="carteiras">
           <div className="wallet-heading">
             <div>
-              <h1>Carteira principal</h1>
-              <p className="muted">Estas carteiras ficam disponíveis no pagamento e para receber NFTs comprados.</p>
+              <h1>{form.id ? "Editar carteira" : "Carteira principal"}</h1>
+              <p className="muted">
+                Estas carteiras ficam disponíveis no pagamento e para receber
+                NFTs comprados.
+              </p>
             </div>
-            <button className="textbutton" type="button" onClick={() => setForm(emptyWallet)}>Adicionar</button>
-          </div>
-          <form
-            className="panel wallet-form-panel"
-          onSubmit={(e) => {
-            e.preventDefault();
-            save.mutate(
-              {
-                ...form,
-                nickname: form.nickname || form.name,
-                profileName: form.profileName || account.name,
-                email: form.email || account.email,
-              },
-              { onSuccess: () => setForm(emptyWallet) },
-            );
-          }}
-        >
-          <h2>{form.id ? "Editar carteira" : "Adicionar carteira"}</h2>
-          <Field label="Nome da carteira" name="name" error={save.error}>
-            <input
-              required
-              value={form.name}
-              onChange={(e) => set({ name: e.target.value })}
-            />
-          </Field>
-          <Field label="Apelido da carteira" name="nickname" error={save.error}>
-            <input
-              value={form.nickname || ""}
-              onChange={(e) => set({ nickname: e.target.value })}
-              placeholder="Ex.: Minha carteira"
-            />
-          </Field>
-          <Field label="Nome do perfil" name="profileName" error={save.error}>
-            <input
-              value={form.profileName || ""}
-              onChange={(e) => set({ profileName: e.target.value })}
-            />
-          </Field>
-          <Field label="Endereço (simulado)" name="address" error={save.error}>
-            <input
-              required
-              value={form.address}
-              onChange={(e) => set({ address: e.target.value })}
-              placeholder="0x seguido de 40 dígitos hexadecimais"
-              spellCheck={false}
-            />
-          </Field>
-          <Field label="Rede" name="network" error={save.error}>
-            <select
-              value={form.network}
-              onChange={(e) => set({ network: e.target.value as Network })}
-            >
-              <option>Ethereum</option>
-              <option>Polygon</option>
-            </select>
-          </Field>
-          <Field label="Tipo de carteira" name="walletType" error={save.error}>
-            <select
-              value={form.walletType || "Carteira pessoal"}
-              onChange={(e) =>
-                set({
-                  walletType: e.target.value as Wallet["walletType"],
-                })
-              }
-            >
-              <option>Carteira pessoal</option>
-              <option>Hardware wallet</option>
-              <option>Carteira de contrato</option>
-            </select>
-          </Field>
-          <Field label="E-mail" name="walletEmail" error={save.error}>
-            <input
-              type="email"
-              value={form.email || ""}
-              onChange={(e) => set({ email: e.target.value })}
-              placeholder={account.email}
-            />
-          </Field>
-          <Field label="Nome ENS" name="ensName" error={save.error}>
-            <input
-              value={form.ensName || ""}
-              onChange={(e) => set({ ensName: e.target.value })}
-              placeholder="nome.eth (opcional)"
-            />
-          </Field>
-          <Field label="Código de indicação" name="referralCode" error={save.error}>
-            <input
-              value={form.referralCode || ""}
-              onChange={(e) => set({ referralCode: e.target.value })}
-              placeholder="Opcional"
-            />
-          </Field>
-          <label className="checkbox">
-            <input
-              type="checkbox"
-              checked={form.primary}
-              onChange={(e) => set({ primary: e.target.checked })}
-            />{" "}
-            Definir como principal
-          </label>
-          <ErrorText error={save.error} />
-          <Button className="full" disabled={save.isPending}>
-            {form.id ? "Salvar carteira" : "Adicionar carteira"}
-          </Button>
-          {form.id && (
             <button
               className="textbutton"
               type="button"
-              onClick={() => setForm(emptyWallet)}
+              onClick={() => {
+                setForm(emptyWallet);
+                save.reset();
+              }}
             >
-              Cancelar edição
+              Adicionar
             </button>
-          )}
-          {save.isSuccess && (
-            <p className="green" role="status">
-              Carteira salva.
-            </p>
-          )}
+          </div>
+          <form
+            className="wallet-form-panel reference-wallet-form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              save.mutate(
+                {
+                  ...form,
+                  nickname: form.nickname || form.name,
+                  profileName: form.profileName || account.name,
+                  email: form.email || account.email,
+                },
+                { onSuccess: () => setForm(emptyWallet) },
+              );
+            }}
+          >
+            <Field label="Nome de exibição" name="name" error={save.error}>
+              <input
+                required
+                aria-label="Nome da carteira"
+                value={form.name}
+                onChange={(event) => set({ name: event.target.value })}
+              />
+            </Field>
+            <Field
+              label="Apelido da carteira"
+              name="nickname"
+              error={save.error}
+            >
+              <input
+                value={form.nickname || ""}
+                maxLength={50}
+                onChange={(event) => set({ nickname: event.target.value })}
+              />
+            </Field>
+            <Field label="Rede" name="network" error={save.error}>
+              <select
+                value={form.network}
+                onChange={(event) =>
+                  set({ network: event.target.value as Network })
+                }
+              >
+                <option>Ethereum</option>
+                <option>Polygon</option>
+              </select>
+            </Field>
+            <Field label="Nome do perfil" name="profileName" error={save.error}>
+              <input
+                value={form.profileName || ""}
+                onChange={(event) => set({ profileName: event.target.value })}
+              />
+            </Field>
+            <Field
+              label="Endereço da carteira"
+              name="address"
+              error={save.error}
+            >
+              <input
+                required
+                aria-label="Endereço (simulado)"
+                value={form.address}
+                onChange={(event) => set({ address: event.target.value })}
+                placeholder="Endereço 0x da carteira"
+                spellCheck={false}
+              />
+            </Field>
+            <div className="wallet-optional-address">
+              <Field
+                label="ENS ou carteira secundária (opcional)"
+                name="secondaryAddress"
+                error={save.error}
+              >
+                <input
+                  value={form.secondaryAddress || ""}
+                  onChange={(event) =>
+                    set({ secondaryAddress: event.target.value })
+                  }
+                  placeholder="ENS ou carteira secundária (opcional)"
+                  spellCheck={false}
+                />
+              </Field>
+            </div>
+            <Field
+              label="Tipo de carteira"
+              name="walletType"
+              error={save.error}
+            >
+              <select
+                value={form.walletType || "Carteira pessoal"}
+                onChange={(event) =>
+                  set({
+                    walletType: event.target.value as Wallet["walletType"],
+                  })
+                }
+              >
+                <option>Carteira pessoal</option>
+                <option>Hardware wallet</option>
+                <option>Carteira de contrato</option>
+              </select>
+            </Field>
+            <Field
+              label="Código de indicação"
+              name="referralCode"
+              error={save.error}
+            >
+              <input
+                value={form.referralCode || ""}
+                onChange={(event) => set({ referralCode: event.target.value })}
+              />
+            </Field>
+            <Field label="E-mail" name="walletEmail" error={save.error}>
+              <input
+                type="email"
+                value={form.email || ""}
+                onChange={(event) => set({ email: event.target.value })}
+                placeholder={account.email}
+              />
+            </Field>
+            <div className="ens-control">
+              <Field label="Nome ENS" name="ensName" error={save.error}>
+                <input
+                  value={(form.ensName || "").replace(/\.eth$/, "")}
+                  onChange={(event) =>
+                    set({
+                      ensName: event.target.value
+                        ? `${event.target.value.replace(/\.eth$/, "")}.eth`
+                        : "",
+                    })
+                  }
+                />
+              </Field>
+              <span className="ens-suffix" aria-hidden="true">
+                .eth⌄
+              </span>
+            </div>
+            <label className="checkbox wallet-primary-check">
+              <input
+                type="checkbox"
+                checked={form.primary}
+                onChange={(event) => set({ primary: event.target.checked })}
+              />
+              Definir como principal
+            </label>
+            <div className="wallet-form-actions">
+              <ErrorText error={save.error} />
+              <Button
+                aria-label={form.id ? "Salvar carteira" : "Adicionar carteira"}
+                disabled={save.isPending}
+              >
+                {save.isPending ? "Salvando…" : "Salvar carteira"}
+              </Button>
+              {form.id && (
+                <button
+                  className="textbutton"
+                  type="button"
+                  onClick={() => setForm(emptyWallet)}
+                >
+                  Cancelar edição
+                </button>
+              )}
+              {save.isSuccess && (
+                <p className="green" role="status">
+                  Carteira salva.
+                </p>
+              )}
+            </div>
           </form>
           <div className="wallet-secondary">
-            <h2>Carteira secundária <button className="textbutton" type="button" onClick={() => setForm({ ...emptyWallet, name: "Carteira secundária" })}>Adicionar</button></h2>
-            {query.isPending ? <Loading kind="summary" /> : query.error ? <Failure error={query.error} retry={query.refetch} /> : query.data?.filter((wallet) => !wallet.primary).length ? query.data.filter((wallet) => !wallet.primary).map((wallet) => (
-              <div className="walletrow" key={wallet.id}>
-                <WalletIcon size={20} />
-                <div className="grow"><strong>{wallet.name}</strong><p className="muted">{wallet.address}</p></div>
-                <Button size="sm" variant="outline" onClick={() => setForm(wallet)}>Editar</Button>
-              </div>
-            )) : <p className="muted">Você ainda não adicionou uma carteira secundária.</p>}
+            <div className="wallet-secondary-heading">
+              <h2>Carteira secundária</h2>
+              <button
+                className="textbutton"
+                type="button"
+                onClick={() => {
+                  setForm({ ...emptyWallet, name: "Carteira secundária" });
+                  document
+                    .getElementById("carteiras")
+                    ?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                Adicionar
+              </button>
+            </div>
+            {query.isPending ? (
+              <Loading kind="summary" />
+            ) : query.error ? (
+              <Failure error={query.error} retry={query.refetch} />
+            ) : !query.data?.some((wallet) => !wallet.primary) ? (
+              <p className="muted">
+                Você ainda não adicionou uma carteira secundária.
+              </p>
+            ) : (
+              <p className="muted">
+                Gerencie abaixo suas carteiras cadastradas.
+              </p>
+            )}
           </div>
           <div className="wallet-all">
             {query.data?.map((wallet) => (
-              <div className="walletrow" key={`all-${wallet.id}`}>
+              <div className="walletrow" key={wallet.id}>
                 <WalletIcon size={20} />
                 <div className="grow">
-                  <strong>{wallet.name}</strong>
+                  <strong>
+                    {wallet.name}
+                    {wallet.primary && (
+                      <span className="wallet-primary-badge">Principal</span>
+                    )}
+                  </strong>
                   <p className="muted">
                     {wallet.nickname || wallet.address} · {wallet.network}
                   </p>
+                  <p className="muted wallet-address">{wallet.address}</p>
                 </div>
                 <Button
                   size="sm"
@@ -641,6 +990,9 @@ export function Wallets() {
                   onClick={() => {
                     setForm(wallet);
                     save.reset();
+                    document
+                      .getElementById("carteiras")
+                      ?.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
                   Editar

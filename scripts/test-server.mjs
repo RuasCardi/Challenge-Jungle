@@ -2,7 +2,7 @@ import { spawn } from "node:child_process";
 // Test the optimized artifact, avoiding Vite's first-visit dependency re-optimization.
 const build = spawn(
   process.execPath,
-  ["node_modules/vite/bin/vite.js", "build"],
+  ["node_modules/vite/bin/vite.js", "build", "--configLoader", "runner"],
   { stdio: "inherit", windowsHide: true },
 );
 const exitCode = await new Promise((resolve) => build.on("exit", resolve));
@@ -12,6 +12,8 @@ const server = spawn(
   [
     "node_modules/vite/bin/vite.js",
     "preview",
+    "--configLoader",
+    "runner",
     "--host",
     "127.0.0.1",
     "--port",

@@ -2,6 +2,7 @@ import { defineConfig } from "@playwright/test";
 import { existsSync } from "node:fs";
 const localBrowser =
   ".audit/browsers/chromium_headless_shell-1254/chrome-headless-shell-win64/chrome-headless-shell.exe";
+const chromeBrowser = "C:/Program Files/Google/Chrome/Application/chrome.exe";
 export default defineConfig({
   testDir: "./tests",
   fullyParallel: true,
@@ -21,7 +22,9 @@ export default defineConfig({
     screenshot: "only-on-failure",
     launchOptions: existsSync(localBrowser)
       ? { executablePath: localBrowser }
-      : {},
+      : existsSync(chromeBrowser)
+        ? { executablePath: chromeBrowser }
+        : {},
   },
   projects: [
     { name: "desktop", use: { viewport: { width: 1440, height: 1000 } } },

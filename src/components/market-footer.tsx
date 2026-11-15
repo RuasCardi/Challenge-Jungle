@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import { Gem, ShieldCheck, Wallet } from "lucide-react";
+﻿import { Link } from "@tanstack/react-router";
+import { Facebook, Instagram, Linkedin, Twitter, Youtube } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -7,6 +7,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./ui/dialog";
+
+export function InformationLink({
+  children,
+  title,
+  className = "textbutton",
+}: {
+  children: React.ReactNode;
+  title: string;
+  className?: string;
+}) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <button className={className}>{children}</button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogTitle className="text-xl font-bold">{title}</DialogTitle>
+        <DialogDescription className="muted mt-3">
+          Esta área não faz parte da demonstração. Explore o catálogo, salve
+          favoritos ou acesse sua conta para experimentar as funcionalidades
+          disponíveis.
+        </DialogDescription>
+      </DialogContent>
+    </Dialog>
+  );
+}
 export function LearnLink() {
   return (
     <Dialog>
@@ -36,42 +62,131 @@ export function MarketFooter() {
     <section className="market-footer wrap" aria-label="Sobre o marketplace">
       <div className="market-benefits">
         <div>
-          <Wallet aria-hidden="true" />
-          <h2>Conecte sua carteira</h2>
-          <p>Cadastre suas carteiras e escolha a rede para sua coleção.</p>
+          <span className="benefit-icon" aria-hidden="true">
+            W
+          </span>
+          <h2>Segurança da carteira</h2>
+          <p>
+            Proteja sua carteira e colecione arte digital verificada com
+            confiança.
+          </p>
+        </div>
+        <div id="criadores">
+          <span className="benefit-icon" aria-hidden="true">
+            C
+          </span>
+          <h2>Criadores em destaque</h2>
+          <p>
+            Conheça artistas, estúdios e comunidades que moldam a cultura
+            digital na rede.
+          </p>
         </div>
         <div>
-          <Gem aria-hidden="true" />
-          <h2>Descubra novas coleções</h2>
-          <p>Encontre edições especiais e salve suas obras favoritas.</p>
+          <span className="benefit-icon" aria-hidden="true">
+            D
+          </span>
+          <h2>Alertas de lançamentos</h2>
+          <p>
+            Receba calendários de cunhagem, novidades e listas de acesso e
+            análises do mercado.
+          </p>
         </div>
-        <div>
-          <ShieldCheck aria-hidden="true" />
-          <h2>Colecione com confiança</h2>
-          <p>Revise cada valor e acompanhe o resultado do seu pedido.</p>
+        <div className="newsletter">
+          <h2>Antecipe-se ao próximo lançamento</h2>
+          <div className="newsletter-form">
+            <input
+              type="email"
+              aria-label="E-mail para novidades"
+              placeholder="digite seu e-mail..."
+            />
+            <InformationLink title="Novidades da Kurio" className="btn">
+              Enviar
+            </InformationLink>
+          </div>
+          <p>
+            Receba lançamentos selecionados, histórias de criadores e novidades
+            do mercado.
+          </p>
         </div>
+      </div>
+      <div className="market-contact">
+        <Link className="brand" to="/">
+          KURIO
+        </Link>
+        <span>
+          Feito para colecionadores,
+          <br />
+          criadores e cultura
+        </span>
+        <a href="mailto:contato@email.com">contato@email.com</a>
+        <span>+55 11 4002 8922</span>
       </div>
       <div className="market-footer-links">
         <div>
-          <Link className="brand" to="/">
-            ◆ KURIO
-          </Link>
-          <p>Uma nova perspectiva sobre a arte digital.</p>
-        </div>
-        <div>
-          <h2>Marketplace</h2>
-          <Link to="/">Explorar NFTs</Link>
-          <Link to="/cart">Meu carrinho</Link>
-        </div>
-        <div>
           <h2>Meu perfil</h2>
-          <Link to="/profile">Perfil e pedidos</Link>
-          <Link to="/wallets">Carteiras</Link>
+          <Link to="/profile">Meu perfil</Link>
+          <Link to="/profile" hash="atividade">
+            Minha coleção
+          </Link>
+          <InformationLink title="Atividade">Atividade</InformationLink>
+          <InformationLink title="Estúdio do criador">
+            Estúdio do criador
+          </InformationLink>
+          <Link to="/profile" hash="favoritos">
+            Lista de interesse
+          </Link>
         </div>
         <div>
-          <h2>Saiba mais</h2>
+          <h2>Central de ajuda</h2>
+          <InformationLink title="Central de ajuda">
+            Central de ajuda
+          </InformationLink>
           <LearnLink />
-          <span>Ambiente demonstrativo</span>
+          <Link to="/wallets">Carteira e segurança</Link>
+          <InformationLink title="Política do mercado">
+            Política do mercado
+          </InformationLink>
+          <InformationLink title="Denunciar item">
+            Denunciar item
+          </InformationLink>
+        </div>
+        <div>
+          <h2>Coleções</h2>
+          {["Arte digital", "Fotografia", "Música", "Arte 3D", "Utilidade"].map(
+            (category) => (
+              <Link
+                key={category}
+                to="/"
+                hash="catalogo"
+                search={{ category, page: 1 }}
+              >
+                {category}
+              </Link>
+            ),
+          )}
+        </div>
+        <div>
+          <h2>Redes sociais</h2>
+          <div className="social-links">
+            {[
+              [Facebook, "Facebook"],
+              [Instagram, "Instagram"],
+              [Twitter, "Twitter"],
+              [Linkedin, "LinkedIn"],
+              [Youtube, "YouTube"],
+            ].map(([Icon, name]) => {
+              const SocialIcon = Icon as typeof Facebook;
+              return (
+                <InformationLink key={String(name)} title={`Kurio no ${name}`}>
+                  <SocialIcon size={18} aria-label={String(name)} />
+                </InformationLink>
+              );
+            })}
+          </div>
+          <h2>Carteiras compatíveis</h2>
+          <span className="compatible-wallets">
+            METAMASK · WALLETCONNECT · COINBASE
+          </span>
         </div>
       </div>
     </section>

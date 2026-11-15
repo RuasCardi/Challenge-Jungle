@@ -2,14 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import {
-  CheckCircle2,
+  ChevronLeft,
   Clock,
+  MailOpen,
   Minus,
   Plus,
   ShoppingCart,
   Trash2,
   Wallet as WalletIcon,
   XCircle,
+  X,
 } from "lucide-react";
 import axios from "axios";
 import { api, getToken } from "../api";
@@ -20,15 +22,19 @@ import {
   useSession,
   useWallets,
 } from "../queries";
-import type { ApiError, Network, OrderIntent, PublicAccount } from "../data";
+import type {
+  ApiError,
+  Network,
+  OrderIntent,
+  PublicAccount,
+  Totals,
+} from "../data";
 import { Decimal, eth } from "../money";
 import {
   ErrorText,
   Failure,
   Field,
   Loading,
-  QuoteView,
-  TotalsView,
   useTitle,
 } from "../components/common";
 import { Button } from "../components/ui/button";
@@ -40,6 +46,47 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../components/ui/dialog";
+import "./purchase.css";
+
+function PurchaseHeader({
+  title,
+  back = "/",
+}: {
+  title: string;
+  back?: "/" | "/cart";
+}) {
+  return (
+    <div className="purchase-mobile-header">
+      <Link to={back} className="purchase-back" aria-label="Voltar">
+        <ChevronLeft size={20} />
+      </Link>
+      <h1>{title}</h1>
+    </div>
+  );
+}
+function PurchaseTotals({ q }: { q: Totals }) {
+  return (
+    <>
+      <div className="line">
+        <span>Subtotal</span>
+        <strong>{eth(q.subtotal)}</strong>
+      </div>
+      <div className="line">
+        <span>Desconto do lançamento</span>
+        <strong>− {eth(q.discount)}</strong>
+      </div>
+      <div className="line">
+        <span>Taxa de rede</span>
+        <strong>{eth(q.fee)}</strong>
+      </div>
+      <small className="purchase-fee-note">Taxa estimada</small>
+      <div className="line total">
+        <span>Total</span>
+        <strong>{eth(q.total)}</strong>
+      </div>
+    </>
+  );
+}
 export function Cart() {
   useTitle("Seu carrinho");
   const cart = useCart();
@@ -49,8 +96,11 @@ export function Cart() {
   const [code, setCode] = useState("");
   return (
     <div className="wrap page cart-page">
-      <div className="crumb"><Link to="/">Início</Link> / <Link to="/">Mercado</Link> / Carrinho</div>
-      <h1 className="page-title">NFTs <span className="muted">({cart.data?.length || 0})</span></h1>
+      <PurchaseHeader title="Carrinho de NFTs" />
+      <div className="crumb">
+        <Link to="/">Início</Link> / <Link to="/">Mercado</Link> / Carrinho
+      </div>
+      <h1 className="sr-only cart-desktop-title">Carrinho de NFTs</h1>
       {cart.isPending ? (
         <Loading kind="form" />
       ) : cart.error ? (
@@ -69,50 +119,26 @@ export function Cart() {
       ) : (
         <div className="checkoutgrid">
           <div className="panel cart-items-panel">
+            <div className="cart-table-head" aria-hidden="true">
+              <span>NFTs</span>
+              <span>Preço</span>
+              <span>Edições</span>
+              <span>Total</span>
+              <span />
+            </div>
             {cart.data.map((i) => (
               <div className="cartrow" key={`${i.id}:${i.editionId}`}>
                 <img
                   src={i.nft.image}
                   alt={i.nft.name}
-                  width="95"
-                  height="95"
+                  width="70"
+                  height="70"
                 />
-                <div className="grow">
+                <div className="grow cart-nft-title">
                   <Link to="/nft/$id" params={{ id: i.id }}>
                     <strong>{i.nft.name}</strong>
                   </Link>
                   <p className="muted">{i.edition.label}</p>
-                  <div className="quantity">
-                    <button
-                      aria-label={`Diminuir ${i.nft.name}`}
-                      disabled={update.isPending || i.quantity <= 1}
-                      onClick={() =>
-                        update.mutate({
-                          id: i.id,
-                          editionId: i.editionId,
-                          quantity: i.quantity - 1,
-                        })
-                      }
-                    >
-                      <Minus size={15} />
-                    </button>
-                    <span aria-live="polite">{i.quantity}</span>
-                    <button
-                      aria-label={`Aumentar ${i.nft.name}`}
-                      disabled={
-                        update.isPending || i.quantity >= i.edition.available
-                      }
-                      onClick={() =>
-                        update.mutate({
-                          id: i.id,
-                          editionId: i.editionId,
-                          quantity: i.quantity + 1,
-                        })
-                      }
-                    >
-                      <Plus size={15} />
-                    </button>
-                  </div>
                   {i.quantity > i.edition.available && (
                     <p className="error" role="alert">
                       Apenas {i.edition.available} disponíveis. Ajuste ou remova
@@ -120,27 +146,57 @@ export function Cart() {
                     </p>
                   )}
                 </div>
-                <div className="right">
-                  <strong>
-                    {eth(
-                      new Decimal(i.edition.price).mul(i.quantity).toFixed(),
-                    )}
-                  </strong>
+                <strong className="cart-unit-price">
+                  {eth(i.edition.price)}
+                </strong>
+                <div className="quantity">
                   <button
-                    className="iconbtn"
-                    aria-label={`Remover ${i.nft.name}`}
-                    disabled={update.isPending}
+                    aria-label={`Diminuir ${i.nft.name}`}
+                    disabled={update.isPending || i.quantity <= 1}
                     onClick={() =>
                       update.mutate({
                         id: i.id,
                         editionId: i.editionId,
-                        quantity: 0,
+                        quantity: i.quantity - 1,
                       })
                     }
                   >
-                    <Trash2 size={17} />
+                    <Minus size={15} />
+                  </button>
+                  <span aria-live="polite">{i.quantity}</span>
+                  <button
+                    aria-label={`Aumentar ${i.nft.name}`}
+                    disabled={
+                      update.isPending || i.quantity >= i.edition.available
+                    }
+                    onClick={() =>
+                      update.mutate({
+                        id: i.id,
+                        editionId: i.editionId,
+                        quantity: i.quantity + 1,
+                      })
+                    }
+                  >
+                    <Plus size={15} />
                   </button>
                 </div>
+                <strong className="cart-row-total">
+                  {eth(new Decimal(i.edition.price).mul(i.quantity).toFixed())}
+                </strong>
+                <button
+                  className="iconbtn cart-remove"
+                  aria-label={`Remover ${i.nft.name}`}
+                  disabled={update.isPending}
+                  onClick={() =>
+                    update.mutate({
+                      id: i.id,
+                      editionId: i.editionId,
+                      quantity: 0,
+                    })
+                  }
+                >
+                  <Trash2 size={17} />
+                </button>
               </div>
             ))}
             <ErrorText error={update.error} />
@@ -158,13 +214,14 @@ export function Cart() {
                 coupon.mutate(code);
               }}
             >
-              <label htmlFor="coupon">Cupom de desconto</label>
+              <label htmlFor="coupon">Código promocional</label>
               <div className="coupon">
                 <input
                   id="coupon"
+                  aria-label="Cupom de desconto"
                   value={code}
                   onChange={(e) => setCode(e.target.value.toUpperCase())}
-                  placeholder="Experimente NFT10"
+                  placeholder="Digite o código promocional..."
                 />
                 <Button size="sm" disabled={coupon.isPending}>
                   Aplicar
@@ -187,14 +244,18 @@ export function Cart() {
               <Failure error={quote.error} retry={quote.refetch} />
             ) : quote.data ? (
               <>
-                <TotalsView q={quote.data} />
+                <PurchaseTotals q={quote.data} />
                 {quote.data.issues.map((i) => (
                   <p key={i} className="error" role="alert">
                     {i}
                   </p>
                 ))}
                 {quote.data.valid ? (
-                  <Link className="btn full" to="/checkout">
+                  <Link
+                    className="btn full"
+                    to="/checkout"
+                    aria-label="Finalizar compra"
+                  >
                     Conectar e finalizar
                   </Link>
                 ) : (
@@ -202,6 +263,9 @@ export function Cart() {
                 )}
               </>
             ) : null}
+            <Link className="textbutton cart-continue" to="/">
+              Continuar explorando
+            </Link>
           </aside>
         </div>
       )}
@@ -217,6 +281,7 @@ type Draft = {
   wallet: string;
   network: Network;
   step: number;
+  provider?: string;
 };
 function readSaved<T>(storage: Storage, key: string): T | null {
   try {
@@ -231,7 +296,7 @@ export function Checkout() {
   return session?.user ? (
     <CheckoutForm key={session.user.id} user={session.user} />
   ) : (
-    <div className="wrap page">
+    <div className="wrap page checkout-page">
       <Loading kind="form" />
     </div>
   );
@@ -251,6 +316,9 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
       "Ethereum",
   );
   const [step, setStep] = useState(initial?.step || 1);
+  const [provider, setProvider] = useState(
+    initial?.provider || "Coinbase Wallet",
+  );
   const [connected, setConnected] = useState(false);
   const [reviewed, setReviewed] = useState("");
   const [attempt, setAttempt] = useState<Attempt | null>(() =>
@@ -259,6 +327,7 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
   const cart = useCart();
   const quote = useQuote(network);
   const wallets = useWallets();
+  const selectedWallet = wallets.data?.find((w) => w.id === wallet);
   const navigate = useNavigate();
   const order = useAction(api.order, ["orders", "cart", "quote"]);
   const connect = useAction(api.connect, []);
@@ -266,9 +335,9 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
   useEffect(() => {
     sessionStorage.setItem(
       draftKey,
-      JSON.stringify({ name, email, wallet, network, step }),
+      JSON.stringify({ name, email, wallet, network, step, provider }),
     );
-  }, [draftKey, name, email, wallet, network, step]);
+  }, [draftKey, name, email, wallet, network, step, provider]);
   const persist = (a: Attempt | null) => {
     setAttempt(a);
     if (a) localStorage.setItem(key, JSON.stringify(a));
@@ -381,9 +450,15 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
       </div>
     );
   return (
-    <div className="wrap page">
-      <div className="crumb"><Link to="/">Início</Link> / <Link to="/">Mercado</Link> / Pagamento</div>
-      <h1>Pagamento</h1>
+    <div className={`wrap page checkout-page checkout-step-${step}`}>
+      <PurchaseHeader
+        title={step === 1 ? "Dados do colecionador" : "Pagamento com carteira"}
+        back="/cart"
+      />
+      <div className="crumb">
+        <Link to="/">Início</Link> / <Link to="/">Mercado</Link> / Pagamento
+      </div>
+      <h1 className="sr-only checkout-desktop-title">Pagamento</h1>
       <div className="steps" aria-label="Etapas do pagamento">
         <span className={step === 1 ? "active" : ""}>1 Dados</span>
         <span className={step === 2 ? "active" : ""}>2 Carteira</span>
@@ -393,25 +468,81 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
         <div className="panel checkout-form-panel">
           <h2>
             {step === 1
-              ? "Dados do colecionador"
+              ? "Perfil do colecionador"
               : step === 2
-                ? "Selecione uma carteira"
+                ? "Suas carteiras"
                 : "Revise seu pedido"}
           </h2>
           {step === 1 ? (
             <form
+              className="collector-checkout-form"
               onSubmit={(e) => {
                 e.preventDefault();
                 setStep(2);
               }}
             >
-              <Field label="Nome completo" name="name">
+              <Field label="Nome de exibição *" name="name">
                 <input
+                  aria-label="Nome completo"
                   required
                   minLength={2}
                   autoComplete="name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                />
+              </Field>
+              <Field label="Nome de usuário" name="checkout-username">
+                <input
+                  readOnly
+                  value={user.username || selectedWallet?.nickname || user.name}
+                />
+              </Field>
+              <Field label="Rede *" name="checkout-network">
+                <select
+                  value={network}
+                  onChange={(e) => {
+                    setNetwork(e.target.value as Network);
+                    setConnected(false);
+                    setReviewed("");
+                  }}
+                >
+                  <option>Ethereum</option>
+                  <option>Polygon</option>
+                </select>
+              </Field>
+              <Field label="Nome do perfil" name="checkout-profile">
+                <input
+                  readOnly
+                  value={selectedWallet?.profileName || user.name}
+                />
+              </Field>
+              <Field label="Endereço da carteira *" name="checkout-address">
+                <input
+                  readOnly
+                  value={selectedWallet?.address || ""}
+                  placeholder="Endereço 0x da carteira"
+                />
+              </Field>
+              <Field label="Carteira secundária" name="checkout-secondary">
+                <input
+                  readOnly
+                  value={
+                    wallets.data?.find((w) => w.id !== wallet)?.address || ""
+                  }
+                  placeholder="ENS ou carteira secundária (opcional)"
+                />
+              </Field>
+              <Field label="Tipo de carteira" name="checkout-wallet-type">
+                <input
+                  readOnly
+                  value={selectedWallet?.walletType || "Carteira pessoal"}
+                />
+              </Field>
+              <Field label="Código de indicação" name="checkout-referral">
+                <input
+                  readOnly
+                  value={selectedWallet?.referralCode || ""}
+                  placeholder="Não informado"
                 />
               </Field>
               <Field label="E-mail" name="email">
@@ -423,6 +554,21 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </Field>
+              <Field label="Nome ENS" name="checkout-ens">
+                <input
+                  readOnly
+                  value={selectedWallet?.ensName || ""}
+                  placeholder=".eth"
+                />
+              </Field>
+              <p className="checkout-wallet-help">
+                <Link to="/wallets" className="textbutton">
+                  Usar outra carteira?
+                </Link>
+                <small>
+                  Os dados da carteira podem ser editados em Carteiras.
+                </small>
+              </p>
               <Button className="full">Continuar</Button>
             </form>
           ) : step === 2 ? (
@@ -447,11 +593,11 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
                     />
                     <WalletIcon size={20} />
                     <span>
-                      <strong>
-                        {w.name}
-                        {w.primary ? " · Principal" : ""}
-                      </strong>
-                      <small>{w.address}</small>
+                      <strong>{w.nickname || w.name}</strong>
+                      <small
+                        title={w.address}
+                      >{`${w.address.slice(0, 7)}…${w.address.slice(-4)}`}</small>
+                      <small>Rede {w.network}</small>
                     </span>
                   </label>
                 ))}
@@ -460,7 +606,7 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
                 <p className="muted">Cadastre uma carteira para continuar.</p>
               )}
               <Link to="/wallets" className="textbutton">
-                Gerenciar carteiras
+                Trocar carteira
               </Link>
               <Field label="Rede de pagamento" name="network">
                 <select
@@ -475,7 +621,32 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
                   <option>Polygon</option>
                 </select>
               </Field>
-              <div className="actions">
+              <fieldset className="checkout-providers">
+                <legend>Carteira e rede</legend>
+                {["WalletConnect", "MetaMask", "Coinbase Wallet"].map((p) => (
+                  <label key={p} className={provider === p ? "selected" : ""}>
+                    <span className="provider-mark" aria-hidden="true">
+                      {p === "Coinbase Wallet" ? (
+                        <WalletIcon size={21} />
+                      ) : (
+                        p[0]
+                      )}
+                    </span>
+                    <span>{p}</span>
+                    <input
+                      type="radio"
+                      name="provider"
+                      checked={provider === p}
+                      onChange={() => {
+                        setProvider(p);
+                        setConnected(false);
+                        setReviewed("");
+                      }}
+                    />
+                  </label>
+                ))}
+              </fieldset>
+              <div className="actions checkout-wallet-controls">
                 {connected ? (
                   <Button
                     variant="outline"
@@ -508,7 +679,7 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
                   : "Carteira desconectada."}
               </p>
               <ErrorText error={connect.error} />
-              <div className="actions">
+              <div className="actions checkout-step-actions">
                 <Button variant="outline" onClick={() => setStep(1)}>
                   Voltar
                 </Button>
@@ -553,6 +724,7 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
                 <span>Carteira / rede</span>
                 <strong>
                   {wallets.data?.find((w) => w.id === wallet)?.name} / {network}
+                  <small className="block">{provider}</small>
                 </strong>
               </div>
               {(changed || !reviewed) && (
@@ -596,11 +768,47 @@ function CheckoutForm({ user }: { user: PublicAccount }) {
             </>
           )}
         </div>
-        <QuoteView
-          q={quote.data}
-          loading={quote.isPending}
-          error={quote.error}
-        />
+        <aside className="panel summary checkout-summary">
+          <h2>Seus NFTs</h2>
+          <div className="checkout-items-head" aria-hidden="true">
+            <span>NFTs</span>
+            <span>Subtotal</span>
+          </div>
+          {cart.data.map((i) => (
+            <div className="checkout-nft-row" key={`${i.id}:${i.editionId}`}>
+              <img src={i.nft.image} alt={i.nft.name} width="70" height="70" />
+              <div>
+                <strong>{i.nft.name}</strong>
+                <small>
+                  {i.edition.label} (× {i.quantity})
+                </small>
+              </div>
+              <strong>
+                {eth(new Decimal(i.edition.price).mul(i.quantity).toFixed())}
+              </strong>
+            </div>
+          ))}
+          <Link className="checkout-coupon-hint" to="/cart">
+            Tem um código promocional? Aplique aqui
+          </Link>
+          {quote.isPending ? (
+            <Loading kind="summary" />
+          ) : quote.error ? (
+            <Failure error={quote.error} retry={quote.refetch} />
+          ) : quote.data ? (
+            <>
+              <PurchaseTotals q={quote.data} />
+              {quote.data.issues.map((issue) => (
+                <p key={issue} role="alert" className="error">
+                  {issue}
+                </p>
+              ))}
+            </>
+          ) : null}
+          <p className="checkout-simulation-hint">
+            Compra simulada. Valores em ETH.
+          </p>
+        </aside>
       </div>
     </div>
   );
@@ -634,15 +842,29 @@ export function OrderPage() {
   }, [o, userId]);
   if (!userId) return null;
   return (
-    <div className="wrap page">
+    <div className="wrap page receipt-page">
       {query.error ? (
         <Failure error={query.error} retry={query.refetch} />
       ) : !o ? (
         <Loading kind="form" />
       ) : (
-        <div className="panel receipt center order-page">
+        <div className={`panel receipt center order-page order-${o.status}`}>
+          <Link
+            to="/"
+            className="receipt-close iconbtn"
+            aria-label="Fechar recibo"
+          >
+            <X size={18} />
+          </Link>
           {o.status === "confirmed" ? (
-            <CheckCircle2 size={64} className="green" />
+            <div className="receipt-thanks">
+              <MailOpen size={72} strokeWidth={1.2} />
+              <span>
+                THANK
+                <br />
+                YOU
+              </span>
+            </div>
           ) : o.status === "pending" ? (
             <Clock size={64} />
           ) : (
@@ -657,65 +879,94 @@ export function OrderPage() {
           </h1>
           <p role="status">
             {o.status === "confirmed"
-              ? "Sua compra simulada foi concluída."
+              ? "Seus NFTs agora estão na sua carteira"
               : o.status === "pending"
                 ? "Aguardando a carteira. Você pode recarregar esta página com segurança."
                 : o.reason}
           </p>
+          <div className="receipt-meta">
+            <div>
+              <strong>ID da transação</strong>
+              <code title={o.transaction || o.id}>
+                {o.transaction
+                  ? `${o.transaction.slice(0, 7)}…${o.transaction.slice(-4)}`
+                  : o.id}
+              </code>
+            </div>
+            <div>
+              <span>Data</span>
+              <span>
+                {new Date(o.createdAt).toLocaleDateString("pt-BR", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </span>
+            </div>
+            <div>
+              <span>Total (ETH)</span>
+              <span>{eth(o.total).replace(" ETH", "")}</span>
+            </div>
+            <div>
+              <strong>Carteira</strong>
+              <span>{o.wallet.name}</span>
+            </div>
+          </div>
           <div className="receiptlines">
-            <div className="line">
-              <span>Pedido</span>
-              <strong>{o.id}</strong>
+            <h2>Detalhes da transação</h2>
+            <div className="receipt-items-head" aria-hidden="true">
+              <span>NFTs</span>
+              <span>Edições</span>
+              <span>Subtotal</span>
             </div>
-            <div className="line">
-              <span>Rede</span>
-              <strong>{o.network}</strong>
-            </div>
-            {o.transaction && (
-              <>
-                <div className="line">
-                  <span>Transação simulada</span>
-                  <code>{o.transaction}</code>
-                </div>
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="textbutton">
-                      Ver transação simulada
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent>
-                    <DialogTitle className="text-xl font-bold">
-                      Explorador de demonstração
-                    </DialogTitle>
-                    <DialogDescription className="muted mt-2">
-                      Esta referência foi criada pelo simulador. Não corresponde
-                      a uma transação na blockchain.
-                    </DialogDescription>
-                    <code className="break-all block mt-4">
-                      {o.transaction}
-                    </code>
-                    <p className="mt-4">
-                      Rede: {o.network} · Status: confirmado
-                    </p>
-                  </DialogContent>
-                </Dialog>
-              </>
-            )}
             {o.items.map((i) => (
-              <div className="line" key={`${i.id}:${i.editionId}`}>
-                <span>
-                  {i.nft.name}
-                  <small className="block">
-                    {i.edition.label} × {i.quantity}
-                  </small>
-                </span>
+              <div className="receipt-nft-row" key={`${i.id}:${i.editionId}`}>
+                <img
+                  src={i.nft.image}
+                  alt={i.nft.name}
+                  width="70"
+                  height="70"
+                />
+                <div>
+                  <strong>{i.nft.name}</strong>
+                  <small>{i.edition.label}</small>
+                </div>
+                <span className="receipt-quantity">(× {i.quantity})</span>
                 <strong>
                   {eth(new Decimal(i.edition.price).mul(i.quantity).toFixed())}
                 </strong>
               </div>
             ))}
-            <TotalsView q={o} />
+            <PurchaseTotals q={o} />
           </div>
+          {o.status === "confirmed" && (
+            <>
+              <p className="receipt-description">
+                Transação simulada confirmada na {o.network}. Seus NFTs foram
+                transferidos para a carteira selecionada na demonstração.
+              </p>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className="receipt-explorer">
+                    Ver no Etherscan <span className="sr-only">simulado</span>
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogTitle className="text-xl font-bold">
+                    Explorador de demonstração
+                  </DialogTitle>
+                  <DialogDescription className="muted mt-2">
+                    Esta referência foi criada pelo simulador. Não corresponde a
+                    uma transação na blockchain.
+                  </DialogDescription>
+                  <code className="break-all block mt-4">{o.transaction}</code>
+                  <p className="mt-4">
+                    Pedido: {o.id} · Rede: {o.network} · Status: confirmado
+                  </p>
+                </DialogContent>
+              </Dialog>
+            </>
+          )}
           {o.status === "pending" ? (
             <Button variant="outline" onClick={() => void query.refetch()}>
               Consultar estado
@@ -725,7 +976,7 @@ export function OrderPage() {
               Voltar ao carrinho
             </Link>
           ) : (
-            <Link className="btn full" to="/">
+            <Link className="textbutton receipt-explore" to="/">
               Explorar mais NFTs
             </Link>
           )}

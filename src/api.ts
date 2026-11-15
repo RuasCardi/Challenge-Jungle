@@ -78,8 +78,14 @@ export const api = {
     http.get<Order[]>("/orders", { signal }).then((r) => r.data),
   getOrder: (id: string, signal?: AbortSignal) =>
     http.get<Order>(`/orders/${id}`, { signal }).then((r) => r.data),
-  profile: (body: { name: string; email: string; avatar?: string }) =>
-    http.patch<PublicAccount>("/profile", body).then((r) => r.data),
+  profile: (body: {
+    name: string;
+    email: string;
+    avatar?: string;
+    username?: string;
+    ensName?: string;
+    walletNickname?: string;
+  }) => http.patch<PublicAccount>("/profile", body).then((r) => r.data),
   password: (body: { oldPassword: string; newPassword: string }) =>
     http.patch("/password", body).then((r) => r.data),
   wallets: (signal?: AbortSignal) =>

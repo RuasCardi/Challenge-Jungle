@@ -1,4 +1,4 @@
-# KRYPTO — NFT Marketplace
+# KURIO — NFT Marketplace
 
 Marketplace de demonstração em React e TypeScript para o [desafio Jungle Gaming](https://github.com/junglegaming/frontend-challenge). Inclui catálogo, detalhe, carrinho, checkout, recibo, login, cadastro, perfil e carteiras, com APIs REST e eventos Socket.IO simulados na camada de rede.
 
@@ -31,7 +31,7 @@ Também é possível cadastrar uma conta. A demonstração persiste dados no nav
 
 ## Fluxo principal
 
-1. Escolha um NFT, sua edição e quantidade. A edição especial de Cyber Ape começa esgotada.
+1. Escolha um NFT, sua edição e quantidade. A edição especial de Emerald Ape #042 começa esgotada.
 2. Adicione ao carrinho e experimente o cupom `NFT10` (10%). `EXPIRED` reproduz um cupom expirado.
 3. Finalize a compra e autentique-se. O carrinho do visitante é incorporado ao da conta, respeitando o estoque.
 4. Preencha os dados, escolha uma carteira compatível com a rede e clique em **Conectar carteira**.
@@ -53,7 +53,7 @@ O botão **Controles da demonstração**, no rodapé, configura os mesmos handle
 | Timeout após criar pedido               | Confirme; a resposta demora 11 s e o cliente expira em 8 s. Recarregue e clique em Recuperar pedido para obter a mesma compra. |
 | Pedido pendente                         | O resultado leva 60 s; interrompa Socket.IO ou recarregue e acompanhe o mesmo pedido.                                          |
 | Preço muda / Edição esgota ao confirmar | Configure antes do envio; a API rejeita a cotação antiga e exige revisão.                                                      |
-| Alterar preço de Cyber Ape              | Com esse NFT no carrinho/checkout, use o botão e observe a atualização via Socket.IO.                                          |
+| Alterar preço de Emerald Ape            | Com esse NFT no carrinho/checkout, use o botão e observe a atualização via Socket.IO.                                          |
 | Expirar sessão                          | Autentique-se, preencha parte do checkout e expire; o login retoma o formulário.                                               |
 | Interromper Socket.IO                   | O cliente reconecta e reconcilia recursos ativos por REST.                                                                     |
 
@@ -92,7 +92,10 @@ A auditoria executa três medições por rota (`/` e `/nft/cyber-ape`) e perfil 
 
 `vercel.json` configura fallback de rotas SPA e o worker da demonstração. `_redirects` oferece o equivalente para hospedagem estática compatível. A versão publicada precisa incluir todo o conteúdo de `dist/`.
 
-Referência visual: [Figma — Frontend Challenge](https://www.figma.com/design/Ff0SksUi7UFtPWUO8kyNtw/Frontend-Challenge?node-id=2-2). Foi possível consultar a prévia pública geral do arquivo; medidas, fontes e assets originais não estavam disponíveis para exportação nesta sessão. O tema KRYPTO, a paleta escura/laranja e a composição foram ajustados a essa prévia. **A fidelidade pixel a pixel e as imagens originais dos macacos ainda dependem de acesso aos frames/assets.** As substituições locais estão documentadas em `ARCHITECTURE.md`.
+Referências visuais: os **15 PNGs em `Exemplos/`**, correspondentes a início, detalhe, carrinho, pagamento, confirmação, login, cadastro, perfil e carteiras, e o [Figma — Frontend Challenge](https://www.figma.com/design/Ff0SksUi7UFtPWUO8kyNtw/Frontend-Challenge?node-id=2-2). A revisão implementa a marca KURIO, paleta marrom/laranja, composição desktop e variantes mobile. As artes originais locais `ape-*.png` foram preservadas; a interface usa cópias WebP otimizadas e responsivas. A fonte Roboto Mono em WOFF2 fica hospedada localmente com sua licença. Ajustes e limites de fidelidade estão em `ARCHITECTURE.md`.
+
+O catálogo contém 36 NFTs em quatro páginas, com diferentes categorias, coleções e redes. Busca, categoria, coleção, disponibilidade, preço máximo, redes e abas compõem a URL. Em mobile, o botão de filtros leva aos controles abaixo do catálogo. O preço padrão do Emerald Ape é `1.19` ETH e o total sem cupom na Ethereum é `1.21` ETH.
+
+`reports/requirements-audit.md` registra a conferência do README fornecido. `reports/VALIDATION.md` registra as verificações e pendências. A publicação externa e o link de repositório permanecem itens da entrega do desafio; esta revisão trabalha no checkout local.
 
 Consulte `ARCHITECTURE.md` para contratos, cache, segurança da simulação e decisões de UX. `REVISAO_TECNICA.md` registra a avaliação histórica do protótipo inicial e não representa o estado atual.
-

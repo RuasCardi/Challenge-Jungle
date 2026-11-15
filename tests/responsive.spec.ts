@@ -17,7 +17,12 @@ test("telas em 390, 768 e 1440 sem overflow, incluindo endereço longo", async (
     "/signup",
   ]) {
     await page.goto(path);
-    await expect(page.locator("h1").first()).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 }).first()).toBeVisible();
+    await expect(
+      page.locator(
+        ".loading-form,.loading-detail,.loading-summary,.loading-catalog",
+      ),
+    ).toHaveCount(0);
     await page.evaluate(() => document.fonts.ready);
     expect(
       await page.evaluate(
