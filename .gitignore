@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.audit/browsers/
+.audit/npm-cache/
+.audit/production/
+.audit/evidence/
+playwright-report/
+test-results/
+*.tsbuildinfo
+.env*
+!.env.example
+.vercel/
+.openai/
+.audit/
