@@ -1,5 +1,5 @@
 {
-  "startedAt": "2026-11-15T14:54:11.365Z",
+  "startedAt": "2026-11-15T20:47:35.730Z",
   "complete": true,
   "targets": {
     "performance": 90,
@@ -22,72 +22,7 @@
       "page": "home",
       "profile": "mobile",
       "run": 1,
-      "timestamp": "2026-11-15T14:54:15.235Z",
-      "lighthouse": "12.8.2",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
-      "scores": {
-        "performance": 93,
-        "accessibility": 100,
-        "best-practices": 100,
-        "seo": 100
-      },
-      "metrics": {
-        "LCP": 3001.378,
-        "CLS": 0,
-        "TBT": 28.5
-      },
-      "issues": [
-        {
-          "id": "first-contentful-paint",
-          "title": "First Contentful Paint",
-          "value": "1.9 s"
-        },
-        {
-          "id": "largest-contentful-paint",
-          "title": "Largest Contentful Paint",
-          "value": "3.0 s"
-        },
-        {
-          "id": "largest-contentful-paint-element",
-          "title": "Largest Contentful Paint element",
-          "value": "3,000 ms"
-        },
-        {
-          "id": "render-blocking-resources",
-          "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 90 ms"
-        },
-        {
-          "id": "unused-javascript",
-          "title": "Reduce unused JavaScript",
-          "value": "Est savings of 24 KiB"
-        },
-        {
-          "id": "bf-cache",
-          "title": "Page prevented back/forward cache restoration",
-          "value": "1 failure reason"
-        },
-        {
-          "id": "image-delivery-insight",
-          "title": "Improve image delivery",
-          "value": "Est savings of 24 KiB"
-        },
-        {
-          "id": "network-dependency-tree-insight",
-          "title": "Network dependency tree"
-        },
-        {
-          "id": "render-blocking-insight",
-          "title": "Render blocking requests",
-          "value": "Est savings of 240 ms"
-        }
-      ]
-    },
-    {
-      "page": "home",
-      "profile": "mobile",
-      "run": 2,
-      "timestamp": "2026-11-15T14:54:24.730Z",
+      "timestamp": "2026-11-15T20:47:39.148Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -97,9 +32,9 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 2861.1989,
+        "LCP": 2859.3630000000003,
         "CLS": 0,
-        "TBT": 40
+        "TBT": 45.5
       },
       "issues": [
         {
@@ -115,7 +50,12 @@
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 90 ms"
+          "value": "Est savings of 240 ms"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "value": "Est savings of 12 KiB"
         },
         {
           "id": "bf-cache",
@@ -134,15 +74,15 @@
         {
           "id": "render-blocking-insight",
           "title": "Render blocking requests",
-          "value": "Est savings of 240 ms"
+          "value": "Est savings of 230 ms"
         }
       ]
     },
     {
       "page": "home",
       "profile": "mobile",
-      "run": 3,
-      "timestamp": "2026-11-15T14:54:32.706Z",
+      "run": 2,
+      "timestamp": "2026-11-15T20:47:48.582Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -152,9 +92,9 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 2863.0949,
+        "LCP": 2864.976,
         "CLS": 0,
-        "TBT": 39.5
+        "TBT": 53
       },
       "issues": [
         {
@@ -170,167 +110,7 @@
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 90 ms"
-        },
-        {
-          "id": "unused-javascript",
-          "title": "Reduce unused JavaScript",
-          "value": "Est savings of 24 KiB"
-        },
-        {
-          "id": "bf-cache",
-          "title": "Page prevented back/forward cache restoration",
-          "value": "1 failure reason"
-        },
-        {
-          "id": "image-delivery-insight",
-          "title": "Improve image delivery",
-          "value": "Est savings of 24 KiB"
-        },
-        {
-          "id": "network-dependency-tree-insight",
-          "title": "Network dependency tree"
-        },
-        {
-          "id": "render-blocking-insight",
-          "title": "Render blocking requests",
-          "value": "Est savings of 240 ms"
-        }
-      ]
-    },
-    {
-      "page": "home",
-      "profile": "desktop",
-      "run": 1,
-      "timestamp": "2026-11-15T14:54:40.478Z",
-      "lighthouse": "12.8.2",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
-      "scores": {
-        "performance": 100,
-        "accessibility": 100,
-        "best-practices": 100,
-        "seo": 100
-      },
-      "metrics": {
-        "LCP": 578.7921,
-        "CLS": 0.000004571741693908194,
-        "TBT": 0
-      },
-      "issues": [
-        {
-          "id": "render-blocking-resources",
-          "title": "Eliminate render-blocking resources",
           "value": "Est savings of 80 ms"
-        },
-        {
-          "id": "unused-css-rules",
-          "title": "Reduce unused CSS",
-          "value": "Est savings of 12 KiB"
-        },
-        {
-          "id": "unused-javascript",
-          "title": "Reduce unused JavaScript",
-          "value": "Est savings of 24 KiB"
-        },
-        {
-          "id": "bf-cache",
-          "title": "Page prevented back/forward cache restoration",
-          "value": "1 failure reason"
-        },
-        {
-          "id": "image-delivery-insight",
-          "title": "Improve image delivery",
-          "value": "Est savings of 12 KiB"
-        },
-        {
-          "id": "network-dependency-tree-insight",
-          "title": "Network dependency tree"
-        },
-        {
-          "id": "render-blocking-insight",
-          "title": "Render blocking requests",
-          "value": "Est savings of 80 ms"
-        }
-      ]
-    },
-    {
-      "page": "home",
-      "profile": "desktop",
-      "run": 2,
-      "timestamp": "2026-11-15T14:54:48.630Z",
-      "lighthouse": "12.8.2",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
-      "scores": {
-        "performance": 100,
-        "accessibility": 100,
-        "best-practices": 100,
-        "seo": 100
-      },
-      "metrics": {
-        "LCP": 578.856,
-        "CLS": 0.000004571741693908194,
-        "TBT": 0
-      },
-      "issues": [
-        {
-          "id": "render-blocking-resources",
-          "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 80 ms"
-        },
-        {
-          "id": "unused-css-rules",
-          "title": "Reduce unused CSS",
-          "value": "Est savings of 12 KiB"
-        },
-        {
-          "id": "unused-javascript",
-          "title": "Reduce unused JavaScript",
-          "value": "Est savings of 48 KiB"
-        },
-        {
-          "id": "bf-cache",
-          "title": "Page prevented back/forward cache restoration",
-          "value": "1 failure reason"
-        },
-        {
-          "id": "image-delivery-insight",
-          "title": "Improve image delivery",
-          "value": "Est savings of 12 KiB"
-        },
-        {
-          "id": "network-dependency-tree-insight",
-          "title": "Network dependency tree"
-        },
-        {
-          "id": "render-blocking-insight",
-          "title": "Render blocking requests",
-          "value": "Est savings of 80 ms"
-        }
-      ]
-    },
-    {
-      "page": "home",
-      "profile": "desktop",
-      "run": 3,
-      "timestamp": "2026-11-15T14:54:56.717Z",
-      "lighthouse": "12.8.2",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
-      "scores": {
-        "performance": 100,
-        "accessibility": 100,
-        "best-practices": 100,
-        "seo": 100
-      },
-      "metrics": {
-        "LCP": 582.0566,
-        "CLS": 0.000004571741693908194,
-        "TBT": 0
-      },
-      "issues": [
-        {
-          "id": "render-blocking-resources",
-          "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 40 ms"
         },
         {
           "id": "unused-javascript",
@@ -345,7 +125,217 @@
         {
           "id": "image-delivery-insight",
           "title": "Improve image delivery",
+          "value": "Est savings of 24 KiB"
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree"
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render blocking requests",
+          "value": "Est savings of 290 ms"
+        }
+      ]
+    },
+    {
+      "page": "home",
+      "profile": "mobile",
+      "run": 3,
+      "timestamp": "2026-11-15T20:47:57.398Z",
+      "lighthouse": "12.8.2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+      "scores": {
+        "performance": 94,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "LCP": 2862.9426,
+        "CLS": 0,
+        "TBT": 52
+      },
+      "issues": [
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "value": "2.9 s"
+        },
+        {
+          "id": "largest-contentful-paint-element",
+          "title": "Largest Contentful Paint element",
+          "value": "2,860 ms"
+        },
+        {
+          "id": "render-blocking-resources",
+          "title": "Eliminate render-blocking resources",
+          "value": "Est savings of 80 ms"
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "value": "1 failure reason"
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "value": "Est savings of 24 KiB"
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree"
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render blocking requests",
+          "value": "Est savings of 220 ms"
+        }
+      ]
+    },
+    {
+      "page": "home",
+      "profile": "desktop",
+      "run": 1,
+      "timestamp": "2026-11-15T20:48:06.082Z",
+      "lighthouse": "12.8.2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "LCP": 572.0958,
+        "CLS": 0.000004571741693908194,
+        "TBT": 0
+      },
+      "issues": [
+        {
+          "id": "render-blocking-resources",
+          "title": "Eliminate render-blocking resources",
+          "value": "Est savings of 80 ms"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
           "value": "Est savings of 12 KiB"
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "value": "1 failure reason"
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "value": "Est savings of 14 KiB"
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree"
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render blocking requests",
+          "value": "Est savings of 80 ms"
+        }
+      ]
+    },
+    {
+      "page": "home",
+      "profile": "desktop",
+      "run": 2,
+      "timestamp": "2026-11-15T20:48:14.547Z",
+      "lighthouse": "12.8.2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "LCP": 573.0931,
+        "CLS": 0.000004571741693908194,
+        "TBT": 0
+      },
+      "issues": [
+        {
+          "id": "render-blocking-resources",
+          "title": "Eliminate render-blocking resources",
+          "value": "Est savings of 80 ms"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "value": "Est savings of 12 KiB"
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "value": "1 failure reason"
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "value": "Est savings of 14 KiB"
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree"
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render blocking requests",
+          "value": "Est savings of 80 ms"
+        }
+      ]
+    },
+    {
+      "page": "home",
+      "profile": "desktop",
+      "run": 3,
+      "timestamp": "2026-11-15T20:48:22.897Z",
+      "lighthouse": "12.8.2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+      "scores": {
+        "performance": 100,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "LCP": 571.6536,
+        "CLS": 0.000004571741693908194,
+        "TBT": 0
+      },
+      "issues": [
+        {
+          "id": "render-blocking-resources",
+          "title": "Eliminate render-blocking resources",
+          "value": "Est savings of 80 ms"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "value": "Est savings of 12 KiB"
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "value": "Est savings of 31 KiB"
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "value": "1 failure reason"
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "value": "Est savings of 14 KiB"
         },
         {
           "id": "network-dependency-tree-insight",
@@ -362,7 +352,7 @@
       "page": "detail",
       "profile": "mobile",
       "run": 1,
-      "timestamp": "2026-11-15T14:55:04.858Z",
+      "timestamp": "2026-11-15T20:48:31.562Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -372,134 +362,9 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 3098.6049000000003,
+        "LCP": 3088.1219,
         "CLS": 0,
-        "TBT": 40
-      },
-      "issues": [
-        {
-          "id": "largest-contentful-paint",
-          "title": "Largest Contentful Paint",
-          "value": "3.1 s"
-        },
-        {
-          "id": "largest-contentful-paint-element",
-          "title": "Largest Contentful Paint element",
-          "value": "3,100 ms"
-        },
-        {
-          "id": "render-blocking-resources",
-          "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 150 ms"
-        },
-        {
-          "id": "unused-javascript",
-          "title": "Reduce unused JavaScript",
-          "value": "Est savings of 57 KiB"
-        },
-        {
-          "id": "bf-cache",
-          "title": "Page prevented back/forward cache restoration",
-          "value": "1 failure reason"
-        },
-        {
-          "id": "image-delivery-insight",
-          "title": "Improve image delivery",
-          "value": "Est savings of 57 KiB"
-        },
-        {
-          "id": "network-dependency-tree-insight",
-          "title": "Network dependency tree"
-        },
-        {
-          "id": "render-blocking-insight",
-          "title": "Render blocking requests",
-          "value": "Est savings of 290 ms"
-        }
-      ]
-    },
-    {
-      "page": "detail",
-      "profile": "mobile",
-      "run": 2,
-      "timestamp": "2026-11-15T14:55:12.427Z",
-      "lighthouse": "12.8.2",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
-      "scores": {
-        "performance": 93,
-        "accessibility": 100,
-        "best-practices": 100,
-        "seo": 100
-      },
-      "metrics": {
-        "LCP": 3096.5362,
-        "CLS": 0,
-        "TBT": 27
-      },
-      "issues": [
-        {
-          "id": "largest-contentful-paint",
-          "title": "Largest Contentful Paint",
-          "value": "3.1 s"
-        },
-        {
-          "id": "largest-contentful-paint-element",
-          "title": "Largest Contentful Paint element",
-          "value": "3,100 ms"
-        },
-        {
-          "id": "render-blocking-resources",
-          "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 280 ms"
-        },
-        {
-          "id": "unused-css-rules",
-          "title": "Reduce unused CSS",
-          "value": "Est savings of 13 KiB"
-        },
-        {
-          "id": "unused-javascript",
-          "title": "Reduce unused JavaScript",
-          "value": "Est savings of 57 KiB"
-        },
-        {
-          "id": "bf-cache",
-          "title": "Page prevented back/forward cache restoration",
-          "value": "1 failure reason"
-        },
-        {
-          "id": "image-delivery-insight",
-          "title": "Improve image delivery",
-          "value": "Est savings of 12 KiB"
-        },
-        {
-          "id": "network-dependency-tree-insight",
-          "title": "Network dependency tree"
-        },
-        {
-          "id": "render-blocking-insight",
-          "title": "Render blocking requests",
-          "value": "Est savings of 270 ms"
-        }
-      ]
-    },
-    {
-      "page": "detail",
-      "profile": "mobile",
-      "run": 3,
-      "timestamp": "2026-11-15T14:55:19.628Z",
-      "lighthouse": "12.8.2",
-      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
-      "scores": {
-        "performance": 93,
-        "accessibility": 100,
-        "best-practices": 100,
-        "seo": 100
-      },
-      "metrics": {
-        "LCP": 3094.2291,
-        "CLS": 0,
-        "TBT": 44
+        "TBT": 74
       },
       "issues": [
         {
@@ -515,17 +380,7 @@
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 280 ms"
-        },
-        {
-          "id": "unused-css-rules",
-          "title": "Reduce unused CSS",
-          "value": "Est savings of 13 KiB"
-        },
-        {
-          "id": "unused-javascript",
-          "title": "Reduce unused JavaScript",
-          "value": "Est savings of 44 KiB"
+          "value": "Est savings of 130 ms"
         },
         {
           "id": "bf-cache",
@@ -535,7 +390,127 @@
         {
           "id": "image-delivery-insight",
           "title": "Improve image delivery",
-          "value": "Est savings of 12 KiB"
+          "value": "Est savings of 35 KiB"
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree"
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render blocking requests",
+          "value": "Est savings of 270 ms"
+        }
+      ]
+    },
+    {
+      "page": "detail",
+      "profile": "mobile",
+      "run": 2,
+      "timestamp": "2026-11-15T20:48:39.266Z",
+      "lighthouse": "12.8.2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+      "scores": {
+        "performance": 92,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "LCP": 3086.7873,
+        "CLS": 0,
+        "TBT": 122
+      },
+      "issues": [
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "value": "3.1 s"
+        },
+        {
+          "id": "largest-contentful-paint-element",
+          "title": "Largest Contentful Paint element",
+          "value": "3,090 ms"
+        },
+        {
+          "id": "render-blocking-resources",
+          "title": "Eliminate render-blocking resources",
+          "value": "Est savings of 270 ms"
+        },
+        {
+          "id": "unused-css-rules",
+          "title": "Reduce unused CSS",
+          "value": "Est savings of 13 KiB"
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "value": "1 failure reason"
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "value": "Est savings of 35 KiB"
+        },
+        {
+          "id": "network-dependency-tree-insight",
+          "title": "Network dependency tree"
+        },
+        {
+          "id": "render-blocking-insight",
+          "title": "Render blocking requests",
+          "value": "Est savings of 260 ms"
+        }
+      ]
+    },
+    {
+      "page": "detail",
+      "profile": "mobile",
+      "run": 3,
+      "timestamp": "2026-11-15T20:48:47.117Z",
+      "lighthouse": "12.8.2",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+      "scores": {
+        "performance": 93,
+        "accessibility": 100,
+        "best-practices": 100,
+        "seo": 100
+      },
+      "metrics": {
+        "LCP": 3086.4512999999997,
+        "CLS": 0,
+        "TBT": 79
+      },
+      "issues": [
+        {
+          "id": "largest-contentful-paint",
+          "title": "Largest Contentful Paint",
+          "value": "3.1 s"
+        },
+        {
+          "id": "largest-contentful-paint-element",
+          "title": "Largest Contentful Paint element",
+          "value": "3,090 ms"
+        },
+        {
+          "id": "render-blocking-resources",
+          "title": "Eliminate render-blocking resources",
+          "value": "Est savings of 120 ms"
+        },
+        {
+          "id": "unused-javascript",
+          "title": "Reduce unused JavaScript",
+          "value": "Est savings of 20 KiB"
+        },
+        {
+          "id": "bf-cache",
+          "title": "Page prevented back/forward cache restoration",
+          "value": "1 failure reason"
+        },
+        {
+          "id": "image-delivery-insight",
+          "title": "Improve image delivery",
+          "value": "Est savings of 35 KiB"
         },
         {
           "id": "network-dependency-tree-insight",
@@ -552,7 +527,7 @@
       "page": "detail",
       "profile": "desktop",
       "run": 1,
-      "timestamp": "2026-11-15T14:55:26.795Z",
+      "timestamp": "2026-11-15T20:48:55.005Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -562,7 +537,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 585.1992,
+        "LCP": 574.1131,
         "CLS": 0,
         "TBT": 0
       },
@@ -579,12 +554,7 @@
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 57 KiB"
-        },
-        {
-          "id": "uses-responsive-images",
-          "title": "Properly size images",
-          "value": "Est savings of 9 KiB"
+          "value": "Est savings of 52 KiB"
         },
         {
           "id": "bf-cache",
@@ -594,7 +564,7 @@
         {
           "id": "image-delivery-insight",
           "title": "Improve image delivery",
-          "value": "Est savings of 43 KiB"
+          "value": "Est savings of 14 KiB"
         },
         {
           "id": "network-dependency-tree-insight",
@@ -611,7 +581,7 @@
       "page": "detail",
       "profile": "desktop",
       "run": 2,
-      "timestamp": "2026-11-15T14:55:33.998Z",
+      "timestamp": "2026-11-15T20:49:02.903Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -621,7 +591,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 581.0471,
+        "LCP": 575.1089,
         "CLS": 0,
         "TBT": 0
       },
@@ -633,22 +603,12 @@
         {
           "id": "render-blocking-resources",
           "title": "Eliminate render-blocking resources",
-          "value": "Est savings of 80 ms"
-        },
-        {
-          "id": "unused-css-rules",
-          "title": "Reduce unused CSS",
-          "value": "Est savings of 14 KiB"
+          "value": "Est savings of 40 ms"
         },
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 57 KiB"
-        },
-        {
-          "id": "uses-responsive-images",
-          "title": "Properly size images",
-          "value": "Est savings of 9 KiB"
+          "value": "Est savings of 20 KiB"
         },
         {
           "id": "bf-cache",
@@ -658,7 +618,7 @@
         {
           "id": "image-delivery-insight",
           "title": "Improve image delivery",
-          "value": "Est savings of 43 KiB"
+          "value": "Est savings of 14 KiB"
         },
         {
           "id": "network-dependency-tree-insight",
@@ -675,7 +635,7 @@
       "page": "detail",
       "profile": "desktop",
       "run": 3,
-      "timestamp": "2026-11-15T14:55:41.196Z",
+      "timestamp": "2026-11-15T20:49:10.334Z",
       "lighthouse": "12.8.2",
       "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
       "scores": {
@@ -685,7 +645,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 582.4448,
+        "LCP": 575.7206,
         "CLS": 0,
         "TBT": 0
       },
@@ -702,12 +662,7 @@
         {
           "id": "unused-javascript",
           "title": "Reduce unused JavaScript",
-          "value": "Est savings of 49 KiB"
-        },
-        {
-          "id": "uses-responsive-images",
-          "title": "Properly size images",
-          "value": "Est savings of 9 KiB"
+          "value": "Est savings of 24 KiB"
         },
         {
           "id": "bf-cache",
@@ -717,7 +672,7 @@
         {
           "id": "image-delivery-insight",
           "title": "Improve image delivery",
-          "value": "Est savings of 43 KiB"
+          "value": "Est savings of 14 KiB"
         },
         {
           "id": "network-dependency-tree-insight",
@@ -742,9 +697,9 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 2863.0949,
+        "LCP": 2862.9426,
         "CLS": 0,
-        "TBT": 39.5
+        "TBT": 52
       }
     },
     {
@@ -757,7 +712,7 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 578.856,
+        "LCP": 572.0958,
         "CLS": 0.000004571741693908194,
         "TBT": 0
       }
@@ -772,9 +727,9 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 3096.5362,
+        "LCP": 3086.7873,
         "CLS": 0,
-        "TBT": 40
+        "TBT": 79
       }
     },
     {
@@ -787,12 +742,12 @@
         "seo": 100
       },
       "metrics": {
-        "LCP": 582.4448,
+        "LCP": 575.1089,
         "CLS": 0,
         "TBT": 0
       }
     }
   ],
   "targetsPassed": true,
-  "finishedAt": "2026-11-15T14:55:47.184Z"
+  "finishedAt": "2026-11-15T20:49:16.730Z"
 }

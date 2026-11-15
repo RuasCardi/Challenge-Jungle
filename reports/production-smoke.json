@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-11-15T14:56:16.266Z",
+  "timestamp": "2026-11-15T20:46:19.382Z",
   "url": "https://challengejungle.vercel.app",
-  "localCommit": "06c1533f478bf5c27fe90ad4295e7762d595e2d1",
-  "deploymentCommit": "06c1533f478bf5c27fe90ad4295e7762d595e2d1",
+  "localCommit": "e17db2930fb96cce320b494cb4c8d1e133d95ddc",
+  "deploymentCommit": "e17db2930fb96cce320b494cb4c8d1e133d95ddc",
   "deploymentCommitSource": "PRODUCTION_COMMIT supplied by deployment verification",
   "checks": [
     {
@@ -58,12 +58,6 @@
   ],
   "pageErrors": [],
   "assetErrors": [],
-  "cancelledAssetRequests": [
-    {
-      "profile": "mobile",
-      "url": "https://challengejungle.vercel.app/assets/ape-neon.webp",
-      "error": "net::ERR_ABORTED"
-    }
-  ],
+  "cancelledAssetRequests": [],
   "passed": true
 }

@@ -25,7 +25,7 @@ Para testar uma prévia já ativa, defina `BASE_URL`; para auditá-la, defina `A
 - Build com verificação TypeScript: aprovado.
 - Instalação limpa pelo lockfile (`npm.cmd ci`): aprovada.
 - ESLint: aprovado.
-- Playwright, rodada consolidada final: **60 testes aprovados em 1,5 minuto**, sem retries. Inclui 27 cenários funcionais em desktop e mobile, três verificações de responsividade e três de regressão visual (quatro imagens por viewport), com os cards corrigidos e os diálogos Radix sob demanda.
+- Playwright, rodada consolidada final: **63 testes aprovados em 2,1 minutos**, sem retries: 54 cenários funcionais, seis verificações de responsividade/alinhamento e três de regressão visual. O teste de alinhamento compara a posição de imagens e preços de todas as duplas de cards e verifica overflow das abas e paginação em 390 e 400 px.
 - Conferência manual de compra completa em 1440 e 390 px: pedido confirmado, sem erros JavaScript nem overflow.
 - Conferência manual de login, cadastro, perfil e carteiras em 390, 768 e 1440 px: sem erros JavaScript nem overflow.
 - Responsividade automatizada: as nove telas, incluindo recibo após compra, passaram nos três tamanhos e com zoom de 200%.
@@ -46,12 +46,14 @@ O servidor de testes usa `build()` e `preview()` do Vite no mesmo processo. Isso
 
 - Aplicação pública: [challengejungle.vercel.app](https://challengejungle.vercel.app).
 - Código-fonte: [RuasCardi/Challenge-Jungle](https://github.com/RuasCardi/Challenge-Jungle).
-- Runtime verificado: commit `06c1533f478bf5c27fe90ad4295e7762d595e2d1`, publicado em produção pela integração Git da Vercel. Deployment `dpl_6w3tnA7ZBkfrWssRfTPJ4up9NjN4`, estado **READY**, com o mesmo SHA confirmado na plataforma.
-- **14 testes funcionais públicos aprovados em 28,3 s**, sem retries: sete cenários em desktop/mobile, cobrindo cadastro/conflito, detalhe direto/404, compra e recibo imutável, duplo clique/pendência/reconexão/refresh, eventos de preço/estoque e teclado/foco de diálogos. Evidência: [relatório HTML de produção](e2e/production/index.html).
+- Runtime verificado: commit `e17db2930fb96cce320b494cb4c8d1e133d95ddc`, publicado em produção pela integração Git da Vercel. Deployment `dpl_6BpTaYbtHu2G68AhTpVQDu4jbHhV`, estado **READY**, com o mesmo SHA confirmado na plataforma.
+- **16 testes funcionais públicos aprovados em 31,6 s**, sem retries: oito cenários em desktop/mobile, cobrindo cadastro/conflito, detalhe direto/404, compra e recibo imutável, duplo clique/pendência/reconexão/refresh, eventos de preço/estoque, teclado/foco de diálogos e alinhamento/overflow mobile. Evidência: [relatório HTML de produção](e2e/production/index.html).
 - **Smoke público aprovado** em desktop/mobile: HTTPS e HTTP 200 no início, detalhe direto e refresh; Service Worker controlador ativo; REST respondido pelo MSW; cliente Socket.IO inscrito; fontes e imagens decodificadas; nenhum erro JavaScript nem falha de asset. Evidência: [production-smoke.json](production-smoke.json).
 - O smoke aguarda fontes e imagens antes de navegar e registra cancelamentos de requests separadamente de falhas reais. O primeiro ensaio havia contado cancelamentos de imagens durante a própria navegação do script como erro; o carregamento e a decodificação foram confirmados na repetição.
 
-Para reproduzir a infraestrutura pública, execute `npm.cmd run test:production`. Para repetir os testes funcionais contra a publicação, defina `$env:BASE_URL='https://challengejungle.vercel.app'` antes de `npm.cmd run test:e2e`. O relatório salvo acima corresponde ao subconjunto de 14 fluxos descrito; a suíte local completa contém 60 testes.
+Para reproduzir a infraestrutura pública, execute `npm.cmd run test:production`. Para repetir os testes funcionais contra a publicação, defina `$env:BASE_URL='https://challengejungle.vercel.app'` antes de `npm.cmd run test:e2e`. O relatório salvo acima corresponde ao subconjunto de 16 fluxos descrito; a suíte local completa contém 63 testes.
+
+O deslocamento de 32 px dos cards pares foi removido. Os títulos reservam duas linhas para que os preços fiquem alinhados, inclusive quando um nome quebra de linha. As abas e a paginação cabem em 390/400 px. O recorte por arte foi aplicado globalmente, alcançando os três estados do destaque, miniaturas, galeria, relacionados, carrinho e checkout. Foram inspecionadas capturas em 400 e 1440 px, além das baselines nos três viewports. As molduras extras do detalhe e dos relacionados também foram removidas.
 
 ## Limites e itens da entrega
 

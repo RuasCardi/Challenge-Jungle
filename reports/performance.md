@@ -1,17 +1,17 @@
 # Auditoria Lighthouse
 
-Auditoria da aplicação publicada em https://challengejungle.vercel.app, runtime `06c1533f478bf5c27fe90ad4295e7762d595e2d1`. Foram executadas três medições por página e perfil, com os mesmos mocks, dados, imagens e funcionalidades disponíveis ao usuário.
+Auditoria da aplicação publicada em https://challengejungle.vercel.app, runtime `e17db2930fb96cce320b494cb4c8d1e133d95ddc`. Foram executadas três medições por página e perfil, com os mesmos mocks, dados, imagens e funcionalidades disponíveis ao usuário.
 
-Início: 2026-11-15T14:54:11.365Z. Fim: 2026-11-15T14:55:47.184Z. Horários do JSON em UTC.
+Início: 2026-11-15T20:47:35.730Z. Fim: 2026-11-15T20:49:16.730Z. Horários do JSON em UTC.
 
 ## Medianas
 
 | Página  | Perfil  | Performance | Acessibilidade | Boas práticas | SEO | LCP (ms) | CLS | TBT (ms) |
 | ------- | ------- | ----------: | -------------: | ------------: | --: | -------: | --: | -------: |
-| Início  | mobile  |          94 |            100 |           100 | 100 | 2.863,09 |   0 |     39,5 |
-| Início  | desktop |         100 |            100 |           100 | 100 |   578,86 |   0 |        0 |
-| Detalhe | mobile  |          93 |            100 |           100 | 100 | 3.096,54 |   0 |       40 |
-| Detalhe | desktop |         100 |            100 |           100 | 100 |   582,44 |   0 |        0 |
+| Início  | mobile  |          94 |            100 |           100 | 100 | 2.862,94 |   0 |       52 |
+| Início  | desktop |         100 |            100 |           100 | 100 |    572,1 |   0 |        0 |
+| Detalhe | mobile  |          93 |            100 |           100 | 100 | 3.086,79 |   0 |       79 |
+| Detalhe | desktop |         100 |            100 |           100 | 100 |   575,11 |   0 |        0 |
 
 Metas: performance ≥ 90, acessibilidade ≥ 95, boas práticas ≥ 95 e SEO ≥ 90. Resultado consolidado: **todas as metas atingidas**. [JSON consolidado](lighthouse/summary.json). As medianas são calculadas independentemente para cada categoria e métrica.
 
@@ -39,7 +39,7 @@ Metas: performance ≥ 90, acessibilidade ≥ 95, boas práticas ≥ 95 e SEO �
 
 ## Correções e comparação
 
-A rodada anterior registrava 87 em performance mobile na prévia local com gzip. A rodada atual mede a publicação Vercel com Brotli e CDN; a comparação entre origens não isola o efeito de uma única mudança. A revisão removeu a moldura dos cards e recortou a borda embutida nos PNGs através do enquadramento CSS, preservando as artes originais. Os diálogos Radix passam a carregar ao abrir, mantendo o controle de foco, Escape e retorno ao acionador. O build usa Terser para reduzir JavaScript.
+A rodada anterior registrava 87 em performance mobile. A revisão removeu a moldura dos cards e recortou a borda embutida nos PNGs através do enquadramento CSS, preservando as artes originais. Os diálogos Radix passam a carregar ao abrir, mantendo o controle de foco, Escape e retorno ao acionador. O build usa Terser para reduzir JavaScript.
 
 A Vercel serve os arquivos estáticos com Brotli, confirmado por resposta HTTP Content-Encoding: br. A prévia local agora negocia a mesma codificação para os arquivos JS/CSS completos, com fallback para clientes sem suporte; o build produz os arquivos comprimidos. A auditoria acima foi executada diretamente na URL pública, sem depender da configuração de compressão da prévia.
 
