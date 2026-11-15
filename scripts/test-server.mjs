@@ -1,30 +1,27 @@
-import { spawn } from "node:child_process";
+import { build, preview } from "vite";
+import { fileURLToPath } from "node:url";
 // Test the optimized artifact, avoiding Vite's first-visit dependency re-optimization.
-const build = spawn(
-  process.execPath,
-  ["node_modules/vite/bin/vite.js", "build", "--configLoader", "runner"],
-  { stdio: "inherit", windowsHide: true },
-);
-const exitCode = await new Promise((resolve) => build.on("exit", resolve));
-if (exitCode !== 0) process.exit(exitCode || 1);
-const server = spawn(
-  process.execPath,
-  [
-    "node_modules/vite/bin/vite.js",
-    "preview",
-    "--configLoader",
-    "runner",
-    "--host",
-    "127.0.0.1",
-    "--port",
-    "5174",
-    "--strictPort",
-  ],
-  { stdio: "inherit", windowsHide: true },
-);
+// Keep the HTTP server in this process so forced Windows teardown cannot orphan it.
+const config = {
+  root: fileURLToPath(new URL("../", import.meta.url)),
+  configLoader: "runner",
+  clearScreen: false,
+};
+let server;
+let closing = false;
 for (const signal of ["SIGINT", "SIGTERM"])
-  process.on(signal, () => {
-    server.kill();
-    process.exit();
+  process.on(signal, async () => {
+    if (closing) return;
+    closing = true;
+    try {
+      await server?.close();
+    } finally {
+      process.exit();
+    }
   });
-await new Promise((resolve) => server.on("exit", resolve));
+await build(config);
+server = await preview({
+  ...config,
+  preview: { host: "127.0.0.1", port: 5174, strictPort: true },
+});
+server.printUrls();

@@ -12,6 +12,9 @@ body {
   background: #160e0a;
   color: #f2eee8;
 }
+#root {
+  display: flow-root;
+}
 .wrap {
   width: min(1200px, calc(100% - 48px));
 }

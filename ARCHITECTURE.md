@@ -6,6 +6,7 @@
 - `src/api.ts`: Axios, Bearer token, timeout e normalização de expiração. Consultas recebem AbortSignal.
 - `src/queries.ts`: TanStack Query, escopo por sessão, mutations, invalidação e favoritos otimistas.
 - `src/ui.tsx`: TanStack Router, parâmetros validados, proteção de rotas, navegação e shell.
+- `src/main.tsx` e `src/bootstrap.tsx`: carregamento paralelo do runtime React, da rota inicial e dos mocks; montagem somente após a ativação do worker e a preparação do banco.
 - `src/pages/`: telas de catálogo, compra e conta, carregadas sob demanda.
 - `src/components/ui/`: componentes shadcn/ui adaptados com Radix, CVA, Tailwind e foco acessível.
 - `src/realtime.tsx`: socket.io-client, versões, deduplicação, isolamento e reconciliação.
@@ -13,7 +14,7 @@
 - `src/store.ts`: fixtures e persistência exclusiva do backend simulado.
 - `src/money.ts`: Decimal.js, precisão 60, truncamento explícito em 18 casas para ETH.
 
-A interface e o módulo da rota inicial são carregados em paralelo à preparação do MSW e do banco simulado. A montagem do React aguarda a conclusão de todos esses passos. `socket.io-client` é importado dentro do efeito de conexão, somente depois da montagem, para capturar o WebSocket já interceptado pelo MSW. O cleanup também cobre a resolução tardia desse import após logout ou desmontagem. `VITE_MOCKS=off` exclui a ativação do mock; o frontend continua usando os mesmos contratos.
+O ponto de entrada carrega `bootstrap.tsx`, o módulo da rota inicial e o MSW em paralelo. Isso evita aguardar o download e a execução do runtime React para só então começar a preparar a rede simulada. A montagem do React aguarda a conclusão de todos esses passos. `socket.io-client` é importado dentro do efeito de conexão, somente depois da montagem, para capturar o WebSocket já interceptado pelo MSW. O cleanup também cobre a resolução tardia desse import após logout ou desmontagem. `VITE_MOCKS=off` exclui a ativação do mock; o frontend continua usando os mesmos contratos.
 
 ## Contratos REST
 
@@ -21,7 +22,7 @@ Base `/api`. Corpo e resposta JSON. Valores monetários são strings decimais; q
 
 | Método / recurso          | Entrada principal                                                     | Resposta                                                                                                                                        |
 | ------------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| `GET /nfts`               | `search`, `category`, `collection`, `available`, `sort`, `page`       | `{items,total,pages,collections}`, 9 itens por página                                                                                           |
+| `GET /nfts`               | `search`, `category`, `collection`, `available`, `sort`, `page`, `network`, `minPrice`, `maxPrice`, `tab` | `{items,total,pages,collections,categories,categoryCounts,networkCounts}`, 9 itens por página |
 | `GET /nfts/:id`           | id                                                                    | NFT com galeria, edições, preços, disponibilidade e versão                                                                                      |
 | `POST /signup`            | `{name,email,password}`                                               | `{token,user,expiresAt}`; conflito de e-mail 409                                                                                                |
 | `POST /login`             | `{email,password}`                                                    | sessão; possível `notice` de ajuste no merge do carrinho                                                                                        |

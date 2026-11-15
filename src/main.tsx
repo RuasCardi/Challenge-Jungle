@@ -1,8 +1,3 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./queries";
-
 import "./style.css";
 import "./reference.css";
 async function initializeMocks() {
@@ -27,8 +22,8 @@ async function initializeMocks() {
 }
 async function start() {
   const path = location.pathname;
-  const [{ default: App }] = await Promise.all([
-    import("./ui"),
+  const [{ mount }] = await Promise.all([
+    import("./bootstrap"),
     /^\/(cart|checkout|order)(\/|$)/.test(path)
       ? import("./pages/purchase")
       : /^\/(login|signup|profile|wallets)(\/|$)/.test(path)
@@ -36,13 +31,7 @@ async function start() {
         : import("./pages/catalog"),
     initializeMocks(),
   ]);
-  createRoot(document.getElementById("root")!).render(
-    <React.StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-    </React.StrictMode>,
-  );
+  mount();
 }
 start().catch(() => {
   document.getElementById("root")!.textContent =

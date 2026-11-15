@@ -3,45 +3,24 @@ import * as chromeLauncher from "chrome-launcher";
 import { mkdir, writeFile } from "node:fs/promises";
 import { cpus, platform, release, totalmem } from "node:os";
 import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import desktop from "lighthouse/core/config/desktop-config.js";
 const origin = process.env.AUDIT_URL || "http://127.0.0.1:4175";
 const output = new URL("../reports/lighthouse/", import.meta.url);
+const root = fileURLToPath(new URL("../", import.meta.url));
+const targets = {
+  performance: 90,
+  accessibility: 95,
+  "best-practices": 95,
+  seo: 90,
+};
 await mkdir(output, { recursive: true });
-const preview = process.env.AUDIT_URL
-  ? null
-  : spawn(
-      process.execPath,
-      [
-        "node_modules/vite/bin/vite.js",
-        "preview",
-        "--configLoader",
-        "runner",
-        "--host",
-        "127.0.0.1",
-        "--port",
-        "4175",
-        "--strictPort",
-      ],
-      { stdio: "ignore", windowsHide: true },
-    );
-for (let i = 0; i < 60; i++) {
-  try {
-    if ((await fetch(origin)).ok) break;
-  } catch {
-    // Aguarda a prévia local terminar de iniciar.
-  }
-  await new Promise((r) => setTimeout(r, 500));
-}
-const chrome = await chromeLauncher.launch({
-  ...(process.env.CHROME_PATH
-    ? { chromePath: process.env.CHROME_PATH }
-    : process.platform === "win32"
-      ? { chromePath: "C:/Program Files/Google/Chrome/Application/chrome.exe" }
-      : {}),
-  chromeFlags: ["--headless=new", "--disable-gpu"],
-  logLevel: "silent",
-});
+let preview;
+let chrome;
 const summary = {
+  startedAt: new Date().toISOString(),
+  complete: false,
+  targets,
   environment: {
     node: process.version,
     platform: platform(),
@@ -57,6 +36,55 @@ const summary = {
   medians: [],
 };
 try {
+  if (!process.env.AUDIT_URL) {
+    preview = spawn(
+      process.execPath,
+      [
+        "node_modules/vite/bin/vite.js",
+        "preview",
+        "--configLoader",
+        "runner",
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "4175",
+        "--strictPort",
+      ],
+      { cwd: root, stdio: "ignore", windowsHide: true },
+    );
+  }
+  let previewError;
+  preview?.on("error", (error) => {
+    previewError = error;
+  });
+  let ready = false;
+  for (let i = 0; i < 60; i++) {
+    if (previewError) throw previewError;
+    if (preview?.exitCode != null) {
+      throw Error(`A prévia encerrou com código ${preview.exitCode}.`);
+    }
+    try {
+      if ((await fetch(origin, { signal: AbortSignal.timeout(2000) })).ok) {
+        ready = true;
+        break;
+      }
+    } catch {
+      // Aguarda a prévia local terminar de iniciar.
+    }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+  }
+  if (!ready) throw Error(`A aplicação não respondeu em ${origin}.`);
+  chrome = await chromeLauncher.launch({
+    ...(process.env.CHROME_PATH
+      ? { chromePath: process.env.CHROME_PATH }
+      : process.platform === "win32"
+        ? {
+            chromePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",
+          }
+        : {}),
+    chromeFlags: ["--headless=new", "--disable-gpu"],
+    logLevel: "silent",
+  });
   for (const [page, path] of [
     ["home", "/"],
     ["detail", "/nft/cyber-ape"],
@@ -122,6 +150,16 @@ try {
           new URL("summary.json", output),
           JSON.stringify(summary, null, 2),
         );
+        if (lhr.runtimeError) {
+          throw Error(`${name}: ${lhr.runtimeError.message}`);
+        }
+        if (
+          Object.values(lhr.categories).some(
+            (category) => category.score == null,
+          )
+        ) {
+          throw Error(`${name}: categoria sem pontuação.`);
+        }
       }
       const group = summary.runs.filter(
         (r) => r.page === page && r.profile === profile,
@@ -144,11 +182,24 @@ try {
         ),
       });
     }
-} finally {
-  await writeFile(
-    new URL("summary.json", output),
-    JSON.stringify(summary, null, 2),
+  summary.complete = summary.runs.length === 12;
+  summary.targetsPassed = summary.medians.every((entry) =>
+    Object.entries(targets).every(
+      ([key, target]) => entry.scores[key] >= target,
+    ),
   );
-  await chrome.kill();
-  preview?.kill();
+} finally {
+  summary.finishedAt = new Date().toISOString();
+  try {
+    await writeFile(
+      new URL("summary.json", output),
+      JSON.stringify(summary, null, 2),
+    );
+  } finally {
+    try {
+      await chrome?.kill();
+    } finally {
+      preview?.kill();
+    }
+  }
 }

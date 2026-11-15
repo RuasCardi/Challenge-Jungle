@@ -2,6 +2,9 @@
 
 Marketplace de demonstração em React e TypeScript para o [desafio Jungle Gaming](https://github.com/junglegaming/frontend-challenge). Inclui catálogo, detalhe, carrinho, checkout, recibo, login, cadastro, perfil e carteiras, com APIs REST e eventos Socket.IO simulados na camada de rede.
 
+- **Aplicação publicada:** [challengejungle.vercel.app](https://challengejungle.vercel.app)
+- **Código-fonte:** [RuasCardi/Challenge-Jungle](https://github.com/RuasCardi/Challenge-Jungle)
+
 ## Executar
 
 Requisitos: Node.js **22.13+** e npm. Não precisa de backend, extensão de carteira ou credenciais de serviços privados.
@@ -88,6 +91,8 @@ A suíte usa Chromium em desktop (1440 × 1000), mobile (390 × 844) e, para res
 
 A auditoria executa três medições por rota (`/` e `/nft/cyber-ape`) e perfil (mobile/desktop), em sequência. HTML, JSON, ambiente, versões, LCP, CLS, TBT e medianas ficam em `reports/lighthouse/`. Execute após `npm run build`, sem outros testes concorrentes. Consulte `reports/VALIDATION.md` para o resultado da entrega.
 
+`npm run test:production` verifica a publicação em desktop/mobile: HTTPS, acesso direto e refresh, assets, erros JavaScript, worker MSW, respostas REST interceptadas e conexão Socket.IO. Gera `reports/production-smoke.json`. Aceita `PRODUCTION_URL` para outro destino; `PRODUCTION_COMMIT` registra o commit previamente conferido na plataforma. Para executar os testes funcionais contra a publicação, defina `BASE_URL=https://challengejungle.vercel.app` antes de `npm run test:e2e`. No Windows com execução de scripts restrita, use `npm.cmd`/`npx.cmd`.
+
 ## Entrega e referências
 
 `vercel.json` configura fallback de rotas SPA e o worker da demonstração. `_redirects` oferece o equivalente para hospedagem estática compatível. A versão publicada precisa incluir todo o conteúdo de `dist/`.
@@ -96,6 +101,6 @@ Referências visuais: os **15 PNGs em `Exemplos/`**, correspondentes a início, 
 
 O catálogo contém 36 NFTs em quatro páginas, com diferentes categorias, coleções e redes. Busca, categoria, coleção, disponibilidade, preço máximo, redes e abas compõem a URL. Em mobile, o botão de filtros leva aos controles abaixo do catálogo. O preço padrão do Emerald Ape é `1.19` ETH e o total sem cupom na Ethereum é `1.21` ETH.
 
-`reports/requirements-audit.md` registra a conferência do README fornecido. `reports/VALIDATION.md` registra as verificações e pendências. A publicação externa e o link de repositório permanecem itens da entrega do desafio; esta revisão trabalha no checkout local.
+`reports/requirements-audit.md` registra a conferência do README fornecido. `reports/VALIDATION.md` registra as verificações, evidências e limites da entrega. A aplicação está publicada na Vercel, com fallback das rotas e o worker MSW disponíveis por HTTPS.
 
 Consulte `ARCHITECTURE.md` para contratos, cache, segurança da simulação e decisões de UX. `REVISAO_TECNICA.md` registra a avaliação histórica do protótipo inicial e não representa o estado atual.
