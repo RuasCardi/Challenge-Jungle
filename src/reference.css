@@ -472,9 +472,11 @@ select option {
   overflow: visible;
 }
 .nftcard-art {
-  padding: 24px 4px;
+  padding: 0;
   background: var(--panel);
-  aspect-ratio: 0.86;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   position: relative;
@@ -486,6 +488,8 @@ select option {
   object-fit: cover;
   border-radius: 16px;
   margin: 0;
+  transform: scale(1.045);
+  transform-origin: right bottom;
 }
 .cardbody {
   padding: 10px 0 0;
@@ -1407,8 +1411,8 @@ select option {
   }
   .nftcard-art {
     border-radius: 23px;
-    padding: 12px 4px;
-    aspect-ratio: 0.87;
+    padding: 0;
+    aspect-ratio: 1;
     overflow: hidden;
   }
   .catalog .nftcard .nftcard-art img {
