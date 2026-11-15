@@ -2,7 +2,7 @@
 
 ## Responsabilidades
 
-A revisão de acabamento remove a moldura do catálogo e usa enquadramento CSS para excluir as bordas já embutidas nas artes, preservando os arquivos originais. As baselines de início em desktop, tablet e mobile foram revistas após essa alteração.
+A revisão de acabamento aplica recorte intrínseco por arte em todos os usos das imagens, incluindo destaques, miniaturas, relacionados, carrinho e checkout, preservando os arquivos originais. A grade mobile usa colunas alinhadas, sem deslocamento dos cards pares, e reserva duas linhas para os títulos, mantendo os preços na mesma altura. Há teste de geometria e overflow das abas/paginação em 390 e 400 px, além das verificações em 768 e 1440 px. As baselines foram revistas após inspeção das capturas.
 
 Diálogos carregam `@radix-ui/react-dialog` ao abrir; acionadores continuam sendo botões acessíveis antes do carregamento. Após carregar, o próprio Radix controla modal, foco, Escape e retorno ao acionador. O build usa Terser e gera alternativas Brotli para JS/CSS; a prévia negocia Brotli com fallback. A publicação Vercel serve Brotli nativamente. As medições finais são feitas também na URL pública.
 
@@ -102,7 +102,7 @@ Testes sensíveis a tempo controlam o relógio do navegador ou finalizam pedidos
 
 ## Identidade visual e assets
 
-A revisão visual usa os 15 frames PNG fornecidos em `Exemplos/`: nove telas desktop e seis mobile. A composição segue a marca KURIO, fundo `#160e0a`, painéis `#261813`, acento `#d18a49`, hero dividido, sidebar de filtros, catálogo de três colunas e rodapé completo. Mobile tem hero compacto, catálogo de duas colunas escalonadas, navegação inferior e telas próprias para autenticação e compra. Perfil, carteiras e recibo também se adaptam a mobile sem um frame específico.
+A revisão visual usa os 15 frames PNG fornecidos em `Exemplos/`: nove telas desktop e seis mobile. A composição segue a marca KURIO, fundo `#160e0a`, painéis `#261813`, acento `#d18a49`, hero dividido, sidebar de filtros, catálogo de três colunas e rodapé completo. Mobile tem hero compacto, catálogo de duas colunas alinhadas, navegação inferior e telas próprias para autenticação e compra. Perfil, carteiras e recibo também se adaptam a mobile sem um frame específico.
 
 As artes `public/assets/ape-hero.png`, `ape-sage.png`, `ape-neon.png` e `ape-golden.png` já existentes no checkout foram preservadas. A interface usa derivados WebP locais, com alternativas de 200/300 pixels quando cabíveis e `srcSet` no catálogo, destaque e detalhe. `scripts/optimize-art.mjs` reproduz a conversão a partir dos PNGs com o Chromium. As quatro primeiras imagens do catálogo carregam imediatamente; o restante usa lazy loading. Os antigos `0.webp` a `7.webp` permanecem como arquivos históricos do protótipo, sem participação nas telas atuais. Roboto Mono substitui a fonte de sistema anterior, em WOFF2 variável com subconjuntos latino e latino estendido; arquivos e licença OFL do [projeto oficial](https://github.com/googlefonts/RobotoMono) estão em `public/assets/`. A família exata e as medidas do arquivo editável não foram verificadas; a aproximação foi conferida pelos PNGs. Nenhum recurso visual depende de CDN durante o uso.
 

@@ -31,7 +31,7 @@ Documento de referência: `C:/Users/gui_r/Downloads/README.md` fornecido pelo us
 - ESLint dos arquivos de contratos, mocks, realtime e testes alterados: aprovado.
 - `tests/contracts.spec.ts` acrescenta cobertura pela rede MSW para facetas/paginação/filtros, persistência e validação de perfil, replay/conflito de idempotência e identidade inconsistente de evento Socket.IO. Resultados de execução devem ser consultados no relatório Playwright da rodada final.
 - Os demais arquivos de testes cobrem compra, conta, carrinho, sessão, favoritos, falhas e eventos; a cobertura só representa validação executada quando acompanhada de relatório da rodada final.
-- A rodada consolidada cobre 60 testes: 54 cenários funcionais em desktop/mobile, três verificações de responsividade e três de regressão visual. O [relatório HTML local](e2e/local/index.html) registra a execução; [VALIDATION.md](VALIDATION.md) detalha os resultados e a correção da baseline mobile identificada na conclusão.
+- A rodada consolidada cobre 63 testes: 54 cenários funcionais em desktop/mobile, seis verificações de responsividade/alinhamento e três de regressão visual. O [relatório HTML local](e2e/local/index.html) registra a execução; [VALIDATION.md](VALIDATION.md) detalha os resultados e as correções visuais.
 - O parser/stringifier da URL agora mantém preços decimais como strings; o teste confere `minPrice=maxPrice=0.123456789123456789` e a mesma seleção após refresh.
 
 ## Evidências da entrega e limites

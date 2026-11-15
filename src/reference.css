@@ -1404,13 +1404,18 @@ select option {
     overflow-x: auto;
   }
   .catalog-tabs > div {
-    gap: 5px;
+    gap: 0;
     width: 100%;
+    min-width: 0;
     justify-content: space-between;
   }
   .catalog-tabs button {
-    font-size: 13px;
+    flex: 1 1 0;
+    min-width: 0;
+    font-size: 11px;
+    line-height: 15px;
     padding-bottom: 3px;
+    white-space: normal;
   }
   .catalog-tabs .sort-control {
     display: none !important;
@@ -1470,7 +1475,13 @@ select option {
   }
   .catalog .pagination {
     justify-content: center;
+    gap: 4px;
     margin-top: 70px;
+  }
+  .catalog .pagination button {
+    width: 28px;
+    min-width: 28px;
+    height: 32px;
   }
   .catalog .skeleton-grid {
     grid-template-columns: 1fr 1fr;

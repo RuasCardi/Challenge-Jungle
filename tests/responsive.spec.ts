@@ -36,6 +36,14 @@ test("cards mobile alinham imagens e preços em 390 e 400 pixels", async ({
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
+    expect(
+      await page.evaluate(() =>
+        [".catalog-tabs", ".catalog .pagination"].every((selector) => {
+          const element = document.querySelector(selector);
+          return element && element.scrollWidth <= element.clientWidth + 1;
+        }),
+      ),
+    ).toBe(true);
   }
 });
 test("telas em 390, 768 e 1440 sem overflow, incluindo endereço longo", async ({
