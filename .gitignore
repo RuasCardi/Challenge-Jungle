@@ -6,6 +6,7 @@ dist/
 .audit/evidence/
 playwright-report/
 test-results/
+reports/e2e/initial-visual-failure/trace.zip
 *.tsbuildinfo
 .env*
 !.env.example

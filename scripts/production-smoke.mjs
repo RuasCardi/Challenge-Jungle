@@ -36,8 +36,20 @@ const report = {
   checks: [],
   pageErrors: [],
   assetErrors: [],
+  cancelledAssetRequests: [],
   passed: false,
 };
+async function assetsReady(page) {
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await Promise.all(
+      Array.from(document.images, async (image) => {
+        image.loading = "eager";
+        await image.decode();
+      }),
+    );
+  });
+}
 await mkdir(evidence, { recursive: true });
 await mkdir(new URL("../reports/", import.meta.url), { recursive: true });
 let browser;
@@ -81,12 +93,18 @@ try {
           ["script", "stylesheet", "image", "font"].includes(
             request.resourceType(),
           )
-        )
-          report.assetErrors.push({
+        ) {
+          const failure = {
             profile,
             url: request.url(),
             error: request.failure()?.errorText,
-          });
+          };
+          // Navigation and responsive image selection can cancel a valid request.
+          // Every rendered image must still decode successfully before proceeding.
+          if (failure.error === "net::ERR_ABORTED")
+            report.cancelledAssetRequests.push(failure);
+          else report.assetErrors.push(failure);
+        }
       });
       const home = await page.goto("/");
       expect(home.status()).toBe(200);
@@ -102,6 +120,7 @@ try {
       }));
       expect(serviceWorker.controller).toBe(`${origin}/mockServiceWorker.js`);
       expect(serviceWorker.state).toBe("activated");
+      await assetsReady(page);
       await page.screenshot({
         path: fileURLToPath(
           new URL(`production-${profile}-home.png`, evidence),
@@ -113,6 +132,7 @@ try {
       await expect(
         page.getByRole("heading", { name: "Emerald Ape #042" }),
       ).toBeVisible({ timeout: 30000 });
+      await assetsReady(page);
       const reloaded = await page.reload();
       expect(reloaded.status()).toBe(200);
       await expect(
@@ -130,6 +150,7 @@ try {
       expect(transport.socketClients).toBeGreaterThan(0);
       expect(mockedApiResponses.has("/api/nfts")).toBe(true);
       expect(mockedApiResponses.has("/api/nfts/cyber-ape")).toBe(true);
+      await assetsReady(page);
       await page.screenshot({
         path: fileURLToPath(
           new URL(`production-${profile}-detail.png`, evidence),

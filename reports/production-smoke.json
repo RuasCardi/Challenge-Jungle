@@ -1,0 +1,69 @@
+{
+  "timestamp": "2026-11-15T14:28:11.013Z",
+  "url": "https://challengejungle.vercel.app",
+  "localCommit": "5cc95b21e19fa5edffc846f93e51c67eca775ca6",
+  "deploymentCommit": "5cc95b21e19fa5edffc846f93e51c67eca775ca6",
+  "deploymentCommitSource": "PRODUCTION_COMMIT supplied by deployment verification",
+  "checks": [
+    {
+      "profile": "desktop",
+      "viewport": {
+        "width": 1440,
+        "height": 1000
+      },
+      "documentStatuses": [
+        200,
+        200,
+        200
+      ],
+      "serviceWorker": {
+        "controller": "https://challengejungle.vercel.app/mockServiceWorker.js",
+        "state": "activated"
+      },
+      "mockedApiPaths": [
+        "/api/cart",
+        "/api/nfts",
+        "/api/nfts/cyber-ape",
+        "/api/session",
+        "/api/testing"
+      ],
+      "socketClients": 1,
+      "passed": true
+    },
+    {
+      "profile": "mobile",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "documentStatuses": [
+        200,
+        200,
+        200
+      ],
+      "serviceWorker": {
+        "controller": "https://challengejungle.vercel.app/mockServiceWorker.js",
+        "state": "activated"
+      },
+      "mockedApiPaths": [
+        "/api/cart",
+        "/api/nfts",
+        "/api/nfts/cyber-ape",
+        "/api/session",
+        "/api/testing"
+      ],
+      "socketClients": 1,
+      "passed": true
+    }
+  ],
+  "pageErrors": [],
+  "assetErrors": [],
+  "cancelledAssetRequests": [
+    {
+      "profile": "mobile",
+      "url": "https://challengejungle.vercel.app/assets/ape-neon.webp",
+      "error": "net::ERR_ABORTED"
+    }
+  ],
+  "passed": true
+}

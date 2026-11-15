@@ -31,12 +31,11 @@ Documento de referência: `C:/Users/gui_r/Downloads/README.md` fornecido pelo us
 - ESLint dos arquivos de contratos, mocks, realtime e testes alterados: aprovado.
 - `tests/contracts.spec.ts` acrescenta cobertura pela rede MSW para facetas/paginação/filtros, persistência e validação de perfil, replay/conflito de idempotência e identidade inconsistente de evento Socket.IO. Resultados de execução devem ser consultados no relatório Playwright da rodada final.
 - Os demais arquivos de testes cobrem compra, conta, carrinho, sessão, favoritos, falhas e eventos; a cobertura só representa validação executada quando acompanhada de relatório da rodada final.
-- Na integração desta revisão, a primeira rodada efetiva executou 54 testes funcionais em desktop/mobile: 42 passaram. As falhas revelaram seletores antigos e um erro real no parser da URL, que descartava filtros decimais. Após correções, 11 dos 12 cenários repetidos passaram; o último teste mobile de logout passou na execução seguinte, após aguardar a navegação e consultar a sessão em vez de depender de um link oculto no mobile. Todos os 54 cenários tiveram aprovação nesse conjunto de execuções. O relatório consolidado da rodada final, incluindo responsividade e regressão visual, é produzido separadamente.
+- A rodada consolidada cobre 60 testes: 54 cenários funcionais em desktop/mobile, três verificações de responsividade e três de regressão visual. O [relatório HTML local](e2e/local/index.html) registra a execução; [VALIDATION.md](VALIDATION.md) detalha os resultados e a correção da baseline mobile identificada na conclusão.
 - O parser/stringifier da URL agora mantém preços decimais como strings; o teste confere `minPrice=maxPrice=0.123456789123456789` e a mesma seleção após refresh.
 
-## Pendências de evidência da entrega
+## Evidências da entrega e limites
 
-- A aderência visual deve ser verificada contra os 15 PNGs de `Exemplos/`, inclusive nos viewports 390/768/1440. Screenshots de regressão são baselines da implementação; não comprovam sozinhos fidelidade aos exemplos.
-- As metas Lighthouse exigem três medições de início e detalhe em desktop/mobile e relatórios HTML/JSON. Ter o script de auditoria não equivale a comprovar as metas.
-- O documento de referência exige repositório e URL pública. A inspeção e as correções locais não comprovam uma publicação acessível nem autorizam, por si sós, publicar em uma conta externa.
-- Imagens substitutas precisam continuar identificadas na documentação caso os assets originais dos exemplos não estejam disponíveis separadamente.
+- Os 15 PNGs de `Exemplos/` foram inspecionados e as telas são exercitadas em 390/768/1440 px. Screenshots de regressão são baselines da implementação e não comprovam, sozinhos, equivalência pixel a pixel com os exemplos. Os desvios e assets substitutos continuam identificados em `ARCHITECTURE.md`.
+- [performance.md](performance.md) apresenta as 12 medições Lighthouse, medianas, métricas, ambiente e links para cada HTML/JSON. A configuração final usa o mesmo cenário padrão de sucesso sem espera artificial em todos os ambientes; lentidão, respostas fora de ordem, timeout e pagamento pendente permanecem configuráveis.
+- O [repositório público](https://github.com/RuasCardi/Challenge-Jungle) está conectado à [publicação Vercel](https://challengejungle.vercel.app). A conferência do commit publicado, os testes dos fluxos públicos e o smoke de infraestrutura estão registrados em [VALIDATION.md](VALIDATION.md).
