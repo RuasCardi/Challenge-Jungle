@@ -1,5 +1,43 @@
 import { test, expect } from "@playwright/test";
 import { add, login, ready, review } from "./helpers";
+test("cards mobile alinham imagens e preços em 390 e 400 pixels", async ({
+  page,
+}) => {
+  await ready(page);
+  for (const width of [390, 400]) {
+    await page.setViewportSize({ width, height: 866 });
+    await page.evaluate(() => document.fonts.ready);
+    const cards = page.locator(".catalog .nftcard");
+    for (const first of [0, 2, 4, 6]) {
+      const left = await cards.nth(first).locator(".nftcard-art").boundingBox();
+      const right = await cards
+        .nth(first + 1)
+        .locator(".nftcard-art")
+        .boundingBox();
+      expect(
+        Math.abs(left!.y - right!.y),
+        `imagens ${first}/${first + 1} em ${width}px`,
+      ).toBeLessThan(1);
+      const leftPrice = await cards
+        .nth(first)
+        .locator(".cardbottom")
+        .boundingBox();
+      const rightPrice = await cards
+        .nth(first + 1)
+        .locator(".cardbottom")
+        .boundingBox();
+      expect(
+        Math.abs(leftPrice!.y - rightPrice!.y),
+        `preços ${first}/${first + 1} em ${width}px`,
+      ).toBeLessThan(1);
+    }
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+    ).toBe(true);
+  }
+});
 test("telas em 390, 768 e 1440 sem overflow, incluindo endereço longo", async ({
   page,
 }) => {

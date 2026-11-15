@@ -15,6 +15,19 @@ body {
 #root {
   display: flow-root;
 }
+/* Crop the baked-in frame in every use of the supplied artwork, including srcSet. */
+img[src*="/assets/ape-hero"] {
+  object-view-box: inset(0 0 0 1.8%);
+}
+img[src*="/assets/ape-sage"] {
+  object-view-box: inset(3.22% 0 0 3.62%);
+}
+img[src*="/assets/ape-neon"] {
+  object-view-box: inset(2.82% 0 0 5.63%);
+}
+img[src*="/assets/ape-golden"] {
+  object-view-box: inset(2.72% 1.56% 0 1.56%);
+}
 .wrap {
   width: min(1200px, calc(100% - 48px));
 }
@@ -488,8 +501,6 @@ select option {
   object-fit: cover;
   border-radius: 16px;
   margin: 0;
-  transform: scale(1.045);
-  transform-origin: right bottom;
 }
 .cardbody {
   padding: 10px 0 0;
@@ -823,10 +834,11 @@ select option {
 .detailgrid .detailart {
   position: relative;
   width: 100%;
-  padding: 20px;
+  padding: 0;
   background: var(--panel);
   border: 0;
-  border-radius: 4px;
+  border-radius: 22px;
+  overflow: hidden;
   aspect-ratio: 1;
 }
 .detailart img {
@@ -1072,8 +1084,10 @@ select option {
   padding: 0;
 }
 .related-card .related-art {
-  padding: 20px 4px;
-  background: var(--panel);
+  padding: 0;
+  background: transparent;
+  border-radius: 16px;
+  overflow: hidden;
 }
 .related-card img {
   border-radius: 16px;
@@ -1407,7 +1421,7 @@ select option {
     align-items: start;
   }
   .nftcard:nth-child(even) {
-    transform: translateY(32px);
+    transform: none;
   }
   .nftcard-art {
     border-radius: 23px;
@@ -1423,10 +1437,15 @@ select option {
   .cardbody {
     padding: 10px 7px 0;
   }
-  .cardbody h3 {
+  .catalog .cardbody h3 {
     font-size: 14px;
     margin: 0;
     line-height: 17px;
+    min-height: 34px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
   }
   .cardbottom {
     font-size: 16px;
@@ -1713,7 +1732,7 @@ select option {
   }
   .related-card .related-art {
     border-radius: 16px;
-    padding: 10px 4px;
+    padding: 0;
   }
   .related-section .sectionheading h2 {
     font-size: 16px;
